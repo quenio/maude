@@ -1,7 +1,0 @@
-
-load "../src/cml.maude" .
-
-red in CML : type(0) .
-red in CML : type(1) .
-red in CML : type(10) .
-red in CML : type(-10) .

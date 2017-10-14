@@ -11,3 +11,5 @@ red in CML : type(('1 i) + ('2 l)) .
 red in CML : type(('1 l) + ('2 i)) .
 red in CML : type(('1 l) + True) .
 red in CML : type(('1 l) and True) .
+red in CML : type(('1 l) + ('2 f)) .
+red in CML : type(('1 f) + ('2 f)) .

@@ -2,36 +2,28 @@
 load "./types.maude" .
 
 mod OPERATOR is
-
   sorts Operator Category .
 
   op category : Operator -> Category .
-
 endm
 
 mod EXPRESSION is
-
   pr TYPE .
   pr OPERATOR .
 
   sorts Expression .
 
   op type : Expression -> Type .
-
 endm
 
 mod LITERAL-EXPRESSION is
-
   pr EXPRESSION .
 
   sort Literal .
-
   subsort Literal < Expression .
-
 endm
 
 mod LITERAL-BOOLEAN is
-
   pr LITERAL-EXPRESSION .
   pr BOOLEAN-TYPE .
 
@@ -40,11 +32,9 @@ mod LITERAL-BOOLEAN is
 
   eq type(True) = Boolean .
   eq type(False) = Boolean .
-
 endm
 
 mod LITERAL-INTEGER is
-
   pr LITERAL-EXPRESSION .
   pr NUMERIC-TYPES .
   pr QID .
@@ -55,11 +45,9 @@ mod LITERAL-INTEGER is
   op _i : Qid -> IntegerLiteral .
   var I : IntegerLiteral .
   eq type(I) = Integer .
-
 endm
 
 mod LITERAL-LONG is
-
   pr LITERAL-EXPRESSION .
   pr NUMERIC-TYPES .
   pr QID .
@@ -70,13 +58,26 @@ mod LITERAL-LONG is
   op _l : Qid -> LongLiteral .
   var L : LongLiteral .
   eq type(L) = Long .
+endm
 
+mod LITERAL-FLOAT is
+  pr LITERAL-EXPRESSION .
+  pr FLOATING-POINT-TYPES .
+  pr QID .
+
+  sort FloatLiteral .
+  subsort FloatLiteral < Literal .
+
+  op _f : Qid -> FloatLiteral .
+  var F : FloatLiteral .
+  eq type(F) = Float .
 endm
 
 mod LITERALS is
   pr LITERAL-BOOLEAN .
   pr LITERAL-INTEGER .
   pr LITERAL-LONG .
+  pr LITERAL-FLOAT .
 endm
 
 mod INFIX-EXPRESSION is
@@ -131,14 +132,17 @@ mod ARITHMETIC-EXPRESSION is
   var OP : Operator .
 
   op arithmetic : Expression Operator Expression -> Bool .
-  eq arithmetic(E1, OP, E2) = numeric(type(E1)) and numeric(type(E2)) and
-                              category(OP) == Arithmetic .
 
   pr NUMERIC-TYPES .
+  ceq arithmetic(E1, OP, E2) = category(OP) == Arithmetic
+    if numeric(type(E1)) and numeric(type(E2)) .
+
+  pr FLOATING-POINT-TYPES .
+  ceq arithmetic(E1, OP, E2) = category(OP) == Arithmetic
+    if floating_point(type(E1)) and floating_point(type(E2)) .
 
   ceq type(E1 OP E2) = type(E2)
     if arithmetic(E1, OP, E2) and type(E1) <= type(E2) .
-
   ceq type(E1 OP E2) = type(E1)
      if arithmetic(E1, OP, E2) and type(E2) <= type(E1) .
 
@@ -147,7 +151,7 @@ mod ARITHMETIC-EXPRESSION is
   op InvalidArithmeticExpression : -> TypeError .
 
   ceq type(E1 OP E2) = Undefined(InvalidArithmeticExpression)
-    if not arithmetic(E1, OP, E2) and category(OP) == Arithmetic .
+    if category(OP) == Arithmetic .
 endm
 
 mod UNDEFINED-EXPRESSION is
