@@ -73,11 +73,25 @@ mod LITERAL-FLOAT is
   eq type(F) = Float .
 endm
 
+mod LITERAL-STRING is
+  pr LITERAL-EXPRESSION .
+  pr STRING-TYPE .
+  pr QID .
+
+  sort StringLiteral .
+  subsort StringLiteral < Literal .
+
+  op _s : Qid -> StringLiteral .
+  var S : StringLiteral .
+  eq type(S) = String .
+endm
+
 mod LITERALS is
   pr LITERAL-BOOLEAN .
   pr LITERAL-INTEGER .
   pr LITERAL-LONG .
   pr LITERAL-FLOAT .
+  pr LITERAL-STRING .
 endm
 
 mod INFIX-EXPRESSION is
@@ -154,6 +168,35 @@ mod ARITHMETIC-EXPRESSION is
     if category(OP) == Arithmetic .
 endm
 
+mod STRING-CONCATENATION is
+
+  pr INFIX-EXPRESSION .
+
+  op Concatenation : -> Category .
+  op & : -> Operator .
+
+  eq category(&) = Concatenation .
+
+  vars E1 E2 : Expression .
+  var OP : Operator .
+
+  op concat : Expression Operator Expression -> Bool .
+
+  pr STRING-TYPE .
+
+  ceq concat(E1, OP, E2) = category(OP) == Concatenation
+    if type(E1) == String and type(E2) == String .
+
+  ceq type(E1 OP E2) = String if concat(E1, OP, E2) .
+
+  pr UNDEFINED-TYPE .
+
+  op InvalidStringConcatenation : -> TypeError .
+
+  ceq type(E1 OP E2) = Undefined(InvalidStringConcatenation)
+    if category(OP) == Concatenation .
+endm
+
 mod UNDEFINED-EXPRESSION is
   pr TYPE .
 
@@ -169,5 +212,6 @@ mod EXPRESSIONS is
   pr LITERALS .
   pr LOGICAL-EXPRESSION .
   pr ARITHMETIC-EXPRESSION .
+  pr STRING-CONCATENATION .
   pr UNDEFINED-EXPRESSION .
 endm

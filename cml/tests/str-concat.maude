@@ -1,0 +1,11 @@
+
+load "../src/cml.maude" .
+
+--- set trace on .
+
+red in CML : type('A s) .
+red in CML : type(('A s) & ('B s)) .
+red in CML : type(('A s) + ('B s)) .
+red in CML : type(('A s) and ('B s)) .
+red in CML : type(('1 i) & ('B s)) .
+red in CML : type(('1 f) & ('2 f)) .
