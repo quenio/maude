@@ -35,6 +35,15 @@ mod LITERAL-EXPRESSION is
   eq type(True) = Boolean .
   eq type(False) = Boolean .
 
+  pr NUMERIC-TYPES .
+  pr INT .
+
+  subsort Int < Expression .
+
+  var N : Int .
+
+  eq type(N) = Integer .
+
 endm
 
 mod INFIX-EXPRESSION is

@@ -12,6 +12,9 @@ mod NUMERIC-TYPES is
   pr TYPE .
   op Integer : -> Type .
   op Decimal : -> Type .
+  op Byte : -> Type .
+  op Short : -> Type .
+  op Long : -> Type .
 endm
 
 mod STRING-TYPE is
