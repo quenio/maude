@@ -65,7 +65,7 @@ mod LOGICAL-EXPRESSION is
   vars E1 E2 : Expression .
   var OP : Operator .
 
-  pr PRIMITIVE-TYPES .
+  pr BOOLEAN-TYPE .
 
   ceq type(E1 OP E2) = Boolean
     if type(E1) = Boolean /\ type(E2) = Boolean /\ category(OP) = Logical .

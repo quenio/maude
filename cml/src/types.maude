@@ -1,27 +1,33 @@
 
 mod TYPE is
-
   sorts Type TypeError .
+endm
 
+mod BOOLEAN-TYPE is
+  pr TYPE .
+  op Boolean : -> Type .
+endm
+
+mod NUMERIC-TYPES is
+  pr TYPE .
+  op Integer : -> Type .
+  op Decimal : -> Type .
+endm
+
+mod STRING-TYPE is
+  pr TYPE .
+  op String : -> Type .
 endm
 
 mod PRIMITIVE-TYPES is
-
-  pr TYPE .
-
-  op Boolean : -> Type .
-  op Integer : -> Type .
-  op Decimal : -> Type .
-  op String : -> Type .
-
+  pr BOOLEAN-TYPE .
+  pr NUMERIC-TYPES .
+  pr STRING-TYPE .
 endm
 
 mod UNDEFINED-TYPE is
-
   pr TYPE .
-
   op Undefined : TypeError -> Type .
-
 endm
 
 mod TYPES is
