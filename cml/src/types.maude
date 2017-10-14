@@ -1,0 +1,36 @@
+
+mod TYPE is
+
+  sorts Type TypeError .
+
+endm
+
+mod BOOLEAN-TYPE is
+
+  pr TYPE .
+
+  op Boolean : -> Type .
+
+endm
+
+mod DECIMAL-TYPE is
+
+  pr TYPE .
+
+  op Decimal : -> Type .
+
+endm
+
+mod UNDEFINED-TYPE is
+
+  pr TYPE .
+
+  op Undefined : TypeError -> Type .
+
+endm
+
+mod TYPES is
+  pr BOOLEAN-TYPE .
+  pr DECIMAL-TYPE .
+  pr UNDEFINED-TYPE .
+endm

@@ -1,0 +1,25 @@
+
+load "../src/cml.maude" .
+
+mod BOOK is
+
+  pr CML .
+
+  op Book : -> Type .
+
+  op InStock : -> Expression .
+  op ReadyForDelivery : -> Expression .
+  op Price : -> Expression .
+
+  eq type(InStock) = Boolean .
+  eq type(ReadyForDelivery) = Boolean .
+  eq type(Price) = Decimal .
+
+endm
+
+--- set trace on .
+
+red in BOOK : type(InStock) .
+red in BOOK : type(InStock and ReadyForDelivery) .
+red in BOOK : type(Price) .
+red in BOOK : type(InStock and Price) .

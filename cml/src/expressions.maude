@@ -1,0 +1,99 @@
+
+load "./types.maude" .
+
+mod OPERATOR is
+
+  sorts Operator Category .
+
+  op category : Operator -> Category .
+
+endm
+
+mod EXPRESSION is
+
+  pr TYPE .
+
+  sorts Expression .
+
+  op type : Expression -> Type .
+
+endm
+
+mod LITERAL-EXPRESSION is
+
+  pr EXPRESSION .
+
+  sort Literal .
+
+  subsort Literal < Expression .
+
+  op True : -> Literal .
+  op False : -> Literal .
+
+  pr BOOLEAN-TYPE .
+
+  eq type(True) = Boolean .
+  eq type(False) = Boolean .
+
+endm
+
+mod INFIX-EXPRESSION is
+
+  pr EXPRESSION .
+
+  sort Infix .
+
+  subsort Infix < Expression .
+
+  pr OPERATOR .
+
+  op (_ _ _) : Expression Operator Expression -> Infix .
+
+endm
+
+mod LOGICAL-EXPRESSION is
+
+  pr INFIX-EXPRESSION .
+
+  op Logical : -> Category .
+
+  ops and or : -> Operator .
+
+  eq category(and) = Logical .
+  eq category(or) = Logical .
+
+  vars E1 E2 : Expression .
+  var OP : Operator .
+
+  pr BOOLEAN-TYPE .
+
+  ceq type(E1 OP E2) = Boolean
+    if type(E1) = Boolean /\ type(E2) = Boolean /\ category(OP) = Logical .
+
+  pr UNDEFINED-TYPE .
+
+  op InvalidLogicalExpression : -> TypeError .
+
+  ceq type(E1 OP E2) = Undefined(InvalidLogicalExpression)
+    if (type(E1) =/= Boolean or type(E2) =/= Boolean) and category(OP) == Logical .
+
+endm
+
+mod UNDEFINED-EXPRESSION is
+
+  pr TYPE .
+
+  op NotInferred : -> TypeError .
+
+  pr EXPRESSION .
+  pr UNDEFINED-TYPE .
+
+  eq type(E:Expression) = Undefined(NotInferred) .
+
+endm
+
+mod EXPRESSIONS is
+  pr LITERAL-EXPRESSION .
+  pr LOGICAL-EXPRESSION .
+  pr UNDEFINED-EXPRESSION .
+endm

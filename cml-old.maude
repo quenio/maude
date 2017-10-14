@@ -1,0 +1,46 @@
+mod CML is
+  inc CONFIGURATION .
+  pr BOOL .
+  pr INT .
+
+  op Concept : -> Cid [ctor] .
+  op abstract :_ : Bool -> Attribute [ctor gather (&)] .
+  op properties :_ : Configuration -> Attribute [ctor gather (&)] .
+
+  op Property : -> Cid [ctor] .
+  op name :_ : Oid -> Attribute [ctor gather (&)] .
+
+  var Name ConceptName PropName : Oid .
+  var Concepts Props : Configuration .
+  var B : Bool .
+  var N : Int .
+
+  op concept_ { _ } : Oid Configuration -> Object .
+  eq concept Name { Props } = < Name : Concept | abstract : false , properties : Props > .
+
+  op abstraction_ { _ } : Oid Configuration -> Object .
+  eq abstraction Name { Props } = < Name : Concept | abstract : true , properties : Props > .
+
+  op prop_ : Oid -> Object .
+  eq prop Name = < Name : Property | none > .
+
+  op count : Configuration -> Int [ctor] .
+
+  eq count(< Name : Concept | abstract : B , properties : Props > Concepts) = count(Props) + count(Concepts) .
+  eq count(< Name : Property | none > Props) = 1 + count(Props) .
+  eq count(< Name : Property | none >) = 1 .
+  eq count(none) = 0 .
+endm
+
+mod CML-SOURCE is
+  ex CML .
+
+  ops C1 C2 P1 P2 P3 : -> Oid .
+  op model : -> Configuration .
+
+  eq model =
+    concept C1 { prop P1 prop P2 }
+    abstraction C2 { prop P3 }  .
+endm
+
+red in CML-SOURCE : count(model) .
