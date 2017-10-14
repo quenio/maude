@@ -30,7 +30,7 @@ mod LITERAL-EXPRESSION is
   op True : -> Literal .
   op False : -> Literal .
 
-  pr BOOLEAN-TYPE .
+  pr PRIMITIVE-TYPES .
 
   eq type(True) = Boolean .
   eq type(False) = Boolean .
@@ -65,7 +65,7 @@ mod LOGICAL-EXPRESSION is
   vars E1 E2 : Expression .
   var OP : Operator .
 
-  pr BOOLEAN-TYPE .
+  pr PRIMITIVE-TYPES .
 
   ceq type(E1 OP E2) = Boolean
     if type(E1) = Boolean /\ type(E2) = Boolean /\ category(OP) = Logical .

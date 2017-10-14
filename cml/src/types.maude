@@ -5,19 +5,14 @@ mod TYPE is
 
 endm
 
-mod BOOLEAN-TYPE is
+mod PRIMITIVE-TYPES is
 
   pr TYPE .
 
   op Boolean : -> Type .
-
-endm
-
-mod DECIMAL-TYPE is
-
-  pr TYPE .
-
+  op Integer : -> Type .
   op Decimal : -> Type .
+  op String : -> Type .
 
 endm
 
@@ -30,7 +25,6 @@ mod UNDEFINED-TYPE is
 endm
 
 mod TYPES is
-  pr BOOLEAN-TYPE .
-  pr DECIMAL-TYPE .
+  pr PRIMITIVE-TYPES .
   pr UNDEFINED-TYPE .
 endm
