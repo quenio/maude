@@ -1,6 +1,8 @@
 
 mod TYPE is
   sorts Type TypeError .
+
+  op _<=_ : Type Type -> Bool .
 endm
 
 mod BOOLEAN-TYPE is
@@ -40,6 +42,29 @@ mod NUMERIC-TYPES is
   eq Decimal <= Decimal = true .
 endm
 
+mod FLOATING-POINT-TYPES is
+  pr TYPE .
+
+  sort FloatingPointType .
+  subsort FloatingPointType < Type .
+
+  op Float : -> FloatingPointType .
+  op Double : -> FloatingPointType .
+
+  op floating_point : Type -> Bool .
+
+  var T1 : FloatingPointType .
+  eq floating_point(T1) = true .
+
+  var T2 : Type .
+  eq floating_point(T2) = false .
+
+  op _<=_ : FloatingPointType FloatingPointType -> Bool .
+  eq Float <= Float = true .
+  eq Float <= Double = true .
+  eq Double <= Double = true .
+endm
+
 mod STRING-TYPE is
   pr TYPE .
   op String : -> Type .
@@ -48,6 +73,7 @@ endm
 mod PRIMITIVE-TYPES is
   pr BOOLEAN-TYPE .
   pr NUMERIC-TYPES .
+  pr FLOATING-POINT-TYPES .
   pr STRING-TYPE .
 endm
 

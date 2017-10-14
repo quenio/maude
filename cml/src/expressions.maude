@@ -28,49 +28,70 @@ mod LITERAL-EXPRESSION is
 
   subsort Literal < Expression .
 
+endm
+
+mod LITERAL-BOOLEAN is
+
+  pr LITERAL-EXPRESSION .
+  pr BOOLEAN-TYPE .
+
   op True : -> Literal .
   op False : -> Literal .
-
-  pr PRIMITIVE-TYPES .
 
   eq type(True) = Boolean .
   eq type(False) = Boolean .
 
+endm
+
+mod LITERAL-INTEGER is
+
+  pr LITERAL-EXPRESSION .
   pr NUMERIC-TYPES .
   pr QID .
 
   sort IntegerLiteral .
   subsort IntegerLiteral < Literal .
+
   op _i : Qid -> IntegerLiteral .
   var I : IntegerLiteral .
   eq type(I) = Integer .
 
+endm
+
+mod LITERAL-LONG is
+
+  pr LITERAL-EXPRESSION .
+  pr NUMERIC-TYPES .
+  pr QID .
+
   sort LongLiteral .
   subsort LongLiteral < Literal .
+
   op _l : Qid -> LongLiteral .
   var L : LongLiteral .
   eq type(L) = Long .
 
 endm
 
-mod INFIX-EXPRESSION is
+mod LITERALS is
+  pr LITERAL-BOOLEAN .
+  pr LITERAL-INTEGER .
+  pr LITERAL-LONG .
+endm
 
+mod INFIX-EXPRESSION is
   pr EXPRESSION .
 
   sort Infix .
-
   subsort Infix < Expression .
 
   op (_ _ _) : Expression Operator Expression -> Infix .
-
 endm
 
 mod LOGICAL-EXPRESSION is
-
   pr INFIX-EXPRESSION .
 
   op Logical : -> Category .
-
   ops and or : -> Operator .
 
   eq category(and) = Logical .
@@ -93,15 +114,12 @@ mod LOGICAL-EXPRESSION is
 
   ceq type(E1 OP E2) = Undefined(InvalidLogicalExpression)
     if not logical(E1, OP, E2) and category(OP) == Logical .
-
 endm
 
 mod ARITHMETIC-EXPRESSION is
-
   pr INFIX-EXPRESSION .
 
   op Arithmetic : -> Category .
-
   ops + - / * : -> Operator .
 
   eq category(+) = Arithmetic .
@@ -130,11 +148,9 @@ mod ARITHMETIC-EXPRESSION is
 
   ceq type(E1 OP E2) = Undefined(InvalidArithmeticExpression)
     if not arithmetic(E1, OP, E2) and category(OP) == Arithmetic .
-
 endm
 
 mod UNDEFINED-EXPRESSION is
-
   pr TYPE .
 
   op NotInferred : -> TypeError .
@@ -143,11 +159,10 @@ mod UNDEFINED-EXPRESSION is
   pr UNDEFINED-TYPE .
 
   eq type(E:Expression) = Undefined(NotInferred) .
-
 endm
 
 mod EXPRESSIONS is
-  pr LITERAL-EXPRESSION .
+  pr LITERALS .
   pr LOGICAL-EXPRESSION .
   pr ARITHMETIC-EXPRESSION .
   pr UNDEFINED-EXPRESSION .
