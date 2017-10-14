@@ -38,11 +38,16 @@ mod LITERAL-EXPRESSION is
   pr NUMERIC-TYPES .
   pr INT .
 
-  subsort Int < Expression .
+  sort IntegerLiteral .
+  subsort Int < IntegerLiteral < Literal .
+  var I : IntegerLiteral .
+  eq type(I) = Integer .
 
-  var N : Int .
-
-  eq type(N) = Integer .
+  sort LongLiteral .
+  subsort Int < LongLiteral < Literal .
+  op _l : Int -> LongLiteral .
+  var L : LongLiteral .
+  eq type(L) = Long .
 
 endm
 

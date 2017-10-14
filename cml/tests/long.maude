@@ -1,0 +1,7 @@
+
+load "../src/cml.maude" .
+
+red in CML : type(0 l) .
+red in CML : type(1 l) .
+red in CML : type(10 l) .
+red in CML : type(-10 l) .
