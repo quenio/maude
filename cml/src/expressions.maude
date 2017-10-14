@@ -12,6 +12,7 @@ endm
 mod EXPRESSION is
 
   pr TYPE .
+  pr OPERATOR .
 
   sorts Expression .
 
@@ -36,16 +37,17 @@ mod LITERAL-EXPRESSION is
   eq type(False) = Boolean .
 
   pr NUMERIC-TYPES .
-  pr INT .
+  pr QID .
 
   sort IntegerLiteral .
-  subsort Int < IntegerLiteral < Literal .
+  subsort IntegerLiteral < Literal .
+  op _i : Qid -> IntegerLiteral .
   var I : IntegerLiteral .
   eq type(I) = Integer .
 
   sort LongLiteral .
-  subsort Int < LongLiteral < Literal .
-  op _l : Int -> LongLiteral .
+  subsort LongLiteral < Literal .
+  op _l : Qid -> LongLiteral .
   var L : LongLiteral .
   eq type(L) = Long .
 
@@ -58,8 +60,6 @@ mod INFIX-EXPRESSION is
   sort Infix .
 
   subsort Infix < Expression .
-
-  pr OPERATOR .
 
   op (_ _ _) : Expression Operator Expression -> Infix .
 
@@ -81,15 +81,55 @@ mod LOGICAL-EXPRESSION is
 
   pr BOOLEAN-TYPE .
 
-  ceq type(E1 OP E2) = Boolean
-    if type(E1) = Boolean /\ type(E2) = Boolean /\ category(OP) = Logical .
+  op logical : Expression Operator Expression -> Bool .
+  eq logical(E1, OP, E2) = type(E1) == Boolean and type(E2) == Boolean and
+                           category(OP) == Logical .
+
+  ceq type(E1 OP E2) = Boolean if logical(E1, OP, E2) .
 
   pr UNDEFINED-TYPE .
 
   op InvalidLogicalExpression : -> TypeError .
 
   ceq type(E1 OP E2) = Undefined(InvalidLogicalExpression)
-    if (type(E1) =/= Boolean or type(E2) =/= Boolean) and category(OP) == Logical .
+    if not logical(E1, OP, E2) and category(OP) == Logical .
+
+endm
+
+mod ARITHMETIC-EXPRESSION is
+
+  pr INFIX-EXPRESSION .
+
+  op Arithmetic : -> Category .
+
+  ops + - / * : -> Operator .
+
+  eq category(+) = Arithmetic .
+  eq category(-) = Arithmetic .
+  eq category(/) = Arithmetic .
+  eq category(*) = Arithmetic .
+
+  vars E1 E2 : Expression .
+  var OP : Operator .
+
+  op arithmetic : Expression Operator Expression -> Bool .
+  eq arithmetic(E1, OP, E2) = numeric(type(E1)) and numeric(type(E2)) and
+                              category(OP) == Arithmetic .
+
+  pr NUMERIC-TYPES .
+
+  ceq type(E1 OP E2) = type(E2)
+    if arithmetic(E1, OP, E2) and type(E1) <= type(E2) .
+
+  ceq type(E1 OP E2) = type(E1)
+     if arithmetic(E1, OP, E2) and type(E2) <= type(E1) .
+
+  pr UNDEFINED-TYPE .
+
+  op InvalidArithmeticExpression : -> TypeError .
+
+  ceq type(E1 OP E2) = Undefined(InvalidArithmeticExpression)
+    if not arithmetic(E1, OP, E2) and category(OP) == Arithmetic .
 
 endm
 
@@ -109,5 +149,6 @@ endm
 mod EXPRESSIONS is
   pr LITERAL-EXPRESSION .
   pr LOGICAL-EXPRESSION .
+  pr ARITHMETIC-EXPRESSION .
   pr UNDEFINED-EXPRESSION .
 endm

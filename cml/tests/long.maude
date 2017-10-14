@@ -1,7 +1,13 @@
 
 load "../src/cml.maude" .
 
-red in CML : type(0 l) .
-red in CML : type(1 l) .
-red in CML : type(10 l) .
-red in CML : type(-10 l) .
+--- set trace on .
+
+red in CML : type('1 i) .
+red in CML : type('0 l) .
+red in CML : type('1 l) .
+red in CML : type(('1 l) + ('2 l)) .
+red in CML : type(('1 i) + ('2 l)) .
+red in CML : type(('1 l) + ('2 i)) .
+red in CML : type(('1 l) + True) .
+red in CML : type(('1 l) and True) .

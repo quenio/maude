@@ -10,11 +10,34 @@ endm
 
 mod NUMERIC-TYPES is
   pr TYPE .
-  op Integer : -> Type .
-  op Decimal : -> Type .
-  op Byte : -> Type .
-  op Short : -> Type .
-  op Long : -> Type .
+
+  sort NumericType .
+  subsort NumericType < Type .
+
+  op Byte : -> NumericType .
+  op Short : -> NumericType .
+  op Integer : -> NumericType .
+  op Long : -> NumericType .
+  op Decimal : -> NumericType .
+
+  op numeric : Type -> Bool .
+
+  var T1 : NumericType .
+  eq numeric(T1) = true .
+
+  var T2 : Type .
+  eq numeric(T2) = false .
+
+  op _<=_ : NumericType NumericType -> Bool .
+  eq Byte <= Byte = true .
+  eq Byte <= Short = true .
+  eq Short <= Short = true .
+  eq Short <= Integer = true .
+  eq Integer <= Integer = true .
+  eq Integer <= Long = true .
+  eq Long <= Long = true .
+  eq Long <= Decimal = true .
+  eq Decimal <= Decimal = true .
 endm
 
 mod STRING-TYPE is
