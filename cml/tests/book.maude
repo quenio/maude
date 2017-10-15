@@ -5,16 +5,22 @@ mod BOOK is
 
   pr CML .
 
-  op Book : -> Type .
-
   op InStock : -> Expression .
-  op ReadyForDelivery : -> Expression .
-  op Price : -> Expression .
-
   eq type(InStock) = Boolean .
+
+  op ReadyForDelivery : -> Expression .
   eq type(ReadyForDelivery) = Boolean .
+
+  op Price : -> Expression .
   eq type(Price) = Decimal .
 
+  op Product : -> ReferenceType .
+  op product : -> Expression .
+  eq type(product) = Product .
+
+  op Book : -> ReferenceType .
+  op book : -> Expression .
+  eq type(book) = Book .
 endm
 
 --- set trace on .
@@ -23,3 +29,18 @@ red in BOOK : type(InStock) .
 red in BOOK : type(InStock and ReadyForDelivery) .
 red in BOOK : type(Price) .
 red in BOOK : type(InStock and Price) .
+red in BOOK : type(book) .
+
+red in BOOK : type(book === product) .
+red in BOOK : type(book !== product) .
+red in BOOK : type(book is Product) .
+red in BOOK : type(book isnt Product) .
+red in BOOK : type(book as? Product) .
+red in BOOK : type(book as! Product) .
+
+red in BOOK : type(book === Product) .
+red in BOOK : type(book !== Product) .
+red in BOOK : type(book is product) .
+red in BOOK : type(book isnt product) .
+red in BOOK : type(book as? product) .
+red in BOOK : type(book as! product) .

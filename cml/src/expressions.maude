@@ -197,6 +197,56 @@ mod STRING-CONCATENATION is
     if category(OP) == Concatenation .
 endm
 
+mod REFERENTIAL-EXPRESSION is
+  pr INFIX-EXPRESSION .
+
+  op EqReferential : -> Category .
+  ops === !== : -> Operator .
+  eq category(===) = EqReferential .
+  eq category(!==) = EqReferential .
+
+  op CheckReferential : -> Category .
+  ops is isnt : -> Operator .
+  eq category(is)  = CheckReferential .
+  eq category(isnt)  = CheckReferential .
+
+  op CastReferential : -> Category .
+  ops as? as! : -> Operator .
+  eq category(as?) = CastReferential .
+  eq category(as!) = CastReferential .
+
+  pr REFERENCE-TYPE .
+  subsort ReferenceType < Expression .
+
+  vars E1 E2 : Expression .
+  var OP : Operator .
+
+  op eqReferential : Expression Operator Expression -> Bool .
+  ceq eqReferential(E1, OP, E2) = category(OP) == EqReferential
+    if (type(E1) :: ReferenceType) /\ (type(E2) :: ReferenceType) .
+
+  op checkReferential : Expression Operator Expression -> Bool .
+  ceq checkReferential(E1, OP, E2) = category(OP) == CheckReferential
+    if (type(E1) :: ReferenceType) /\ (E2 :: ReferenceType) .
+
+  op castReferential : Expression Operator Expression -> Bool .
+  ceq castReferential(E1, OP, E2) = category(OP) == CastReferential
+    if (type(E1) :: ReferenceType) /\ (E2 :: ReferenceType) .
+
+  pr BOOLEAN-TYPE .
+  ceq type(E1 OP E2) = Boolean
+    if eqReferential(E1, OP, E2) or checkReferential(E1, OP, E2) .
+  ceq type(E1 OP E2) = E2
+    if castReferential(E1, OP, E2) .
+
+  pr UNDEFINED-TYPE .
+  op InvalidReferentialExpression : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidReferentialExpression)
+    if category(OP) == EqReferential or
+       category(OP) == CheckReferential or
+       category(OP) == CastReferential .
+endm
+
 mod UNDEFINED-EXPRESSION is
   pr TYPE .
 
@@ -213,5 +263,6 @@ mod EXPRESSIONS is
   pr LOGICAL-EXPRESSION .
   pr ARITHMETIC-EXPRESSION .
   pr STRING-CONCATENATION .
+  pr REFERENTIAL-EXPRESSION .
   pr UNDEFINED-EXPRESSION .
 endm
