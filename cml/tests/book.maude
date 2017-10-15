@@ -24,6 +24,7 @@ mod BOOK is
 endm
 
 --- set trace on .
+set show stats off .
 
 red in BOOK : type(InStock) .
 red in BOOK : type(InStock and ReadyForDelivery) .
