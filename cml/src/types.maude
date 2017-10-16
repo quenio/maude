@@ -1,13 +1,17 @@
 
 mod TYPE is
   sorts Type TypeError .
-
   op _<=_ : Type Type -> Bool .
+  op Undefined : TypeError -> Type .
 endm
 
 mod BOOLEAN-TYPE is
   pr TYPE .
-  op Boolean : -> Type .
+
+  sort BooleanType .
+  subsort BooleanType < Type .
+
+  op Boolean : -> BooleanType .
 endm
 
 mod NUMERIC-TYPES is
@@ -77,20 +81,38 @@ mod PRIMITIVE-TYPES is
   pr STRING-TYPE .
 endm
 
-mod REFERENCE-TYPE is
+mod REFERENTIAL-TYPE is
   pr TYPE .
-  
-  sort ReferenceType .
-  subsort ReferenceType < Type .
+
+  sort ReferentialType .
+  subsort ReferentialType < Type .
 endm
 
-mod UNDEFINED-TYPE is
-  pr TYPE .
-  op Undefined : TypeError -> Type .
+mod REQUIRED-TYPE is
+  pr REFERENTIAL-TYPE .
+
+  sort RequiredType .
+  subsort RequiredType < ReferentialType .
+endm
+
+mod OPTIONAL-TYPE is
+  pr REFERENTIAL-TYPE .
+
+  sort OptionalType .
+  subsort OptionalType < ReferentialType .
+
+  op _? : ReferentialType -> OptionalType .
+
+  pr REQUIRED-TYPE .
+  op InvalidTypeDeclaration : -> TypeError .
+  var T : Type .
+  ceq T ? = Undefined(InvalidTypeDeclaration)
+    if not (T :: RequiredType) .
 endm
 
 mod TYPES is
   pr PRIMITIVE-TYPES .
-  pr REFERENCE-TYPE .
-  pr UNDEFINED-TYPE .
+  pr REFERENTIAL-TYPE .
+  pr REQUIRED-TYPE .
+  pr OPTIONAL-TYPE .
 endm
