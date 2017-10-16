@@ -29,4 +29,6 @@ red in SCENARIO : type(book !== product) == Boolean .
 red in SCENARIO : type(book is Product) == Boolean .
 red in SCENARIO : type(book isnt Product) == Boolean .
 red in SCENARIO : type(book as! Product) == Product .
+red in SCENARIO : type(book as! Product ?) == Product ? .
+red in SCENARIO : type(book as? Product ?) == Product ? .
 red in SCENARIO : type(book as? Product) == Undefined(InvalidTypeCast) .
