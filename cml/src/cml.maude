@@ -2,6 +2,6 @@
 load "./expressions.maude" .
 
 mod CML is
-  pr TYPES .
-  pr EXPRESSIONS .
+  ex TYPES .
+  ex EXPRESSIONS .
 endm

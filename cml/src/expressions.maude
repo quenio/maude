@@ -154,9 +154,9 @@ mod ARITHMETIC-EXPRESSION is
     if floating_point(type(E1)) and floating_point(type(E2)) .
 
   ceq type(E1 OP E2) = type(E2)
-    if arithmetic(E1, OP, E2) and type(E1) <= type(E2) .
+    if arithmetic(E1, OP, E2) and type(E1) <: type(E2) .
   ceq type(E1 OP E2) = type(E1)
-     if arithmetic(E1, OP, E2) and type(E2) <= type(E1) .
+     if arithmetic(E1, OP, E2) and type(E2) <: type(E1) .
 
   op InvalidArithmeticExpression : -> TypeError .
 
@@ -193,10 +193,10 @@ endm
 mod REFERENTIAL-EXPRESSION is
   pr INFIX-EXPRESSION .
 
-  op ReferentialEquality : -> Category .
+  op ReferentialComparison : -> Category .
   ops === !== : -> Operator .
-  eq category(===) = ReferentialEquality .
-  eq category(!==) = ReferentialEquality .
+  eq category(===) = ReferentialComparison .
+  eq category(!==) = ReferentialComparison .
 
   op TypeChecking : -> Category .
   ops is isnt : -> Operator .
@@ -215,12 +215,32 @@ mod REFERENTIAL-EXPRESSION is
   var OP : Operator .
 
   op refEquality : Expression Operator Expression -> Bool .
-  ceq refEquality(E1, OP, E2) = category(OP) == ReferentialEquality
-    if (type(E1) :: OptionalType) /\ (type(E2) :: OptionalType) .
+  ceq refEquality(E1, OP, E2) = category(OP) == ReferentialComparison
+    if (type(E1) :: ReferentialType) /\ (type(E2) :: ReferentialType) .
+
+  op InvalidSubTypeComparison : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidSubTypeComparison)
+    if (category(OP) == ReferentialComparison) /\ not (requiredTypeOf(type(E1)) <:> requiredTypeOf(type(E2))) .
 
   op typeCheck : Expression Operator Expression -> Bool .
   ceq typeCheck(E1, OP, E2) = category(OP) == TypeChecking
     if (type(E1) :: ReferentialType) /\ (E2 :: ReferentialType) .
+
+  op InvalidSubTypeCheck : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidSubTypeCheck)
+    if (category(OP) == TypeChecking) /\ not (requiredTypeOf(E2) <: requiredTypeOf(type(E1))) .
+
+  op InvalidRequiredTypeCheck : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCheck)
+    if (category(OP) == TypeChecking) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
+
+  op InvalidOptionalTypeCheck : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCheck)
+    if (category(OP) == TypeChecking) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
+
+  op InvalidSequentialTypeCheck : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidSequentialTypeCheck)
+    if (category(OP) == TypeChecking) /\ not (type(E1) :: SequentialType) /\ (E2 :: SequentialType) .
 
   op typeCast : Expression Operator Expression -> Bool .
   ceq typeCast(E1, OP, E2) = category(OP) == TypeCasting
@@ -242,7 +262,7 @@ mod REFERENTIAL-EXPRESSION is
 
   op InvalidReferentialExpression : -> TypeError .
   ceq type(E1 OP E2) = Undefined(InvalidReferentialExpression)
-    if category(OP) == ReferentialEquality or
+    if category(OP) == ReferentialComparison or
        category(OP) == TypeChecking or
        category(OP) == TypeCasting .
 endm

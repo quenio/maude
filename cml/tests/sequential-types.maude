@@ -14,6 +14,17 @@ mod SCENARIO is
   op Product : -> RequiredType .
   op product : -> Expression .
   eq type(product) = Product .
+
+  op _<:_ : ReferentialType ReferentialType -> Bool .
+  eq Book <: Product = true .
+
+  op Order : -> RequiredType .
+  op orders : -> Expression .
+  eq type(orders) = Order * .
+
+  var T : Type .
+  ceq Order <: T = false if T =/= Order .
+  ceq T <: Order = false if T =/= Order .
 endm
 
 set show stats off .
@@ -24,16 +35,18 @@ set show stats off .
 red in SCENARIO : type(flag) == Undefined(InvalidSequentialTypeDeclaration) .
 red in SCENARIO : type(flag or True) == Undefined(InvalidLogicalExpression) .
 red in SCENARIO : type(books) == Book * .
-red in SCENARIO : type(books === books) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books === product) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books !== books) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books !== product) == Undefined(InvalidReferentialExpression) .
---- red in SCENARIO : type(books is Product *) == Boolean .
---- red in SCENARIO : type(books is Product ?) == Boolean .
---- red in SCENARIO : type(books is Product) == Boolean .
---- red in SCENARIO : type(books is Product *) == Boolean .
---- red in SCENARIO : type(books is Product ?) == Boolean .
---- red in SCENARIO : type(books is Product) == Boolean .
+red in SCENARIO : type(books === books) == Boolean .
+red in SCENARIO : type(books === product) == Boolean .
+red in SCENARIO : type(books !== books) == Boolean .
+red in SCENARIO : type(books !== product) == Boolean .
+red in SCENARIO : type(books is Product *) == Boolean .
+red in SCENARIO : type(books is Product ?) == Undefined(InvalidOptionalTypeCheck) .
+red in SCENARIO : type(books is Product) == Undefined(InvalidRequiredTypeCheck) .
+red in SCENARIO : type(orders === product) == Undefined(InvalidSubTypeComparison) .
+red in SCENARIO : type(orders !== product) == Undefined(InvalidSubTypeComparison) .
+red in SCENARIO : type(orders is Product) == Undefined(InvalidSubTypeCheck) .
+red in SCENARIO : type(orders is Product ?) == Undefined(InvalidSubTypeCheck) .
+red in SCENARIO : type(orders is Product *) == Undefined(InvalidSubTypeCheck) .
 red in SCENARIO : type(books as! Product) == Product .
 red in SCENARIO : type(books as! Product ?) == Product ? .
 red in SCENARIO : type(books as! Product *) == Product * .

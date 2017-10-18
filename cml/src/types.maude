@@ -1,7 +1,16 @@
 
 mod TYPE is
-  sorts Type TypeError .
-  op _<=_ : Type Type -> Bool .
+  sorts Type .
+
+  op _<:_ : Type Type -> Bool .
+  var T : Type .
+  eq T <: T = true .
+
+  op _<:>_ : Type Type -> Bool .
+  var X Y Z : Type .
+  eq X <:> Y = X <: Y or Y <: X .
+
+  sorts TypeError .
   op Undefined : TypeError -> Type .
 endm
 
@@ -34,16 +43,10 @@ mod NUMERIC-TYPES is
   var T2 : Type .
   eq numeric(T2) = false .
 
-  op _<=_ : NumericType NumericType -> Bool .
-  eq Byte <= Byte = true .
-  eq Byte <= Short = true .
-  eq Short <= Short = true .
-  eq Short <= Integer = true .
-  eq Integer <= Integer = true .
-  eq Integer <= Long = true .
-  eq Long <= Long = true .
-  eq Long <= Decimal = true .
-  eq Decimal <= Decimal = true .
+  eq Byte <: Short = true .
+  eq Short <: Integer = true .
+  eq Integer <: Long = true .
+  eq Long <: Decimal = true .
 endm
 
 mod FLOATING-POINT-TYPES is
@@ -63,10 +66,7 @@ mod FLOATING-POINT-TYPES is
   var T2 : Type .
   eq floating_point(T2) = false .
 
-  op _<=_ : FloatingPointType FloatingPointType -> Bool .
-  eq Float <= Float = true .
-  eq Float <= Double = true .
-  eq Double <= Double = true .
+  eq Float <: Double = true .
 endm
 
 mod STRING-TYPE is
@@ -98,6 +98,10 @@ mod REFERENTIAL-TYPES is
   op InvalidSequentialTypeDeclaration : -> TypeError .
   ceq T * = Undefined(InvalidSequentialTypeDeclaration)
     if not (T :: RequiredType) .
+
+  op requiredTypeOf : ReferentialType -> RequiredType .
+  ceq requiredTypeOf(T ?) = T if T :: ReferentialType .
+  ceq requiredTypeOf(T *) = T if T :: ReferentialType .
 endm
 
 mod TYPES is
