@@ -208,7 +208,7 @@ mod REFERENTIAL-EXPRESSION is
   eq category(as?) = TypeCasting .
   eq category(as!) = TypeCasting .
 
-  pr REFERENTIAL-TYPE .
+  pr REFERENTIAL-TYPES .
   subsort ReferentialType < Expression .
 
   vars E1 E2 : Expression .
@@ -226,8 +226,6 @@ mod REFERENTIAL-EXPRESSION is
   ceq typeCast(E1, OP, E2) = category(OP) == TypeCasting
     if (type(E1) :: ReferentialType) /\ (E2 :: ReferentialType) .
 
-  pr REQUIRED-TYPE .
-  pr OPTIONAL-TYPE .
   op InvalidTypeCast : -> TypeError .
   ceq type(E1 OP E2) = Undefined(InvalidTypeCast)
     if (OP == as?) /\ (type(E1) :: OptionalType) /\ (E2 :: RequiredType) .

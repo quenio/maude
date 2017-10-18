@@ -81,29 +81,13 @@ mod PRIMITIVE-TYPES is
   pr STRING-TYPE .
 endm
 
-mod REFERENTIAL-TYPE is
+mod REFERENTIAL-TYPES is
   pr TYPE .
 
-  sort ReferentialType .
-  subsort ReferentialType < Type .
-endm
+  sorts ReferentialType SequentialType OptionalType RequiredType .
+  subsorts RequiredType < OptionalType < SequentialType < ReferentialType < Type .
 
-mod REQUIRED-TYPE is
-  pr REFERENTIAL-TYPE .
-
-  sort RequiredType .
-  subsort RequiredType < ReferentialType .
-endm
-
-mod OPTIONAL-TYPE is
-  pr REFERENTIAL-TYPE .
-
-  sort OptionalType .
-  subsort OptionalType < ReferentialType .
-
-  op _? : ReferentialType -> OptionalType .
-
-  pr REQUIRED-TYPE .
+  op _? : RequiredType -> OptionalType .
   op InvalidTypeDeclaration : -> TypeError .
   var T : Type .
   ceq T ? = Undefined(InvalidTypeDeclaration)
@@ -112,7 +96,5 @@ endm
 
 mod TYPES is
   pr PRIMITIVE-TYPES .
-  pr REFERENTIAL-TYPE .
-  pr REQUIRED-TYPE .
-  pr OPTIONAL-TYPE .
+  pr REFERENTIAL-TYPES .
 endm
