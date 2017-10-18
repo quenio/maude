@@ -32,3 +32,9 @@ red in SCENARIO : type(book as! Product) == Product .
 red in SCENARIO : type(book as! Product ?) == Product ? .
 red in SCENARIO : type(book as? Product ?) == Product ? .
 red in SCENARIO : type(book as? Product) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(book === flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book !== flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book is flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book isnt flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book as! flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book as? flag) == Undefined(InvalidReferentialExpression) .
