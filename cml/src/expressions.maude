@@ -228,7 +228,7 @@ mod REFERENTIAL-EXPRESSION is
 
   op InvalidTypeCast : -> TypeError .
   ceq type(E1 OP E2) = Undefined(InvalidTypeCast)
-    if (OP == as?) /\ (type(E1) :: OptionalType) /\ (E2 :: RequiredType) .
+    if (OP == as?) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
 
   pr BOOLEAN-TYPE .
   ceq type(E1 OP E2) = Boolean

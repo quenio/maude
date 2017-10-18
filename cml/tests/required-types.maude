@@ -1,0 +1,40 @@
+
+load "../src/cml.maude" .
+
+mod SCENARIO is
+  pr CML .
+
+  op flag : -> Expression .
+  eq type(flag) = Boolean .
+
+  op Book : -> RequiredType .
+  op book : -> Expression .
+  eq type(book) = Book .
+
+  op Product : -> RequiredType .
+  op product : -> Expression .
+  eq type(product) = Product .
+endm
+
+set show stats off .
+--- set trace on .
+--- show components SCENARIO .
+--- show sorts SCENARIO .
+
+red in SCENARIO : type(flag) == Boolean .
+red in SCENARIO : type(flag or True) == Boolean .
+red in SCENARIO : type(book) == Book .
+red in SCENARIO : type(book === product) == Boolean .
+red in SCENARIO : type(book !== product) == Boolean .
+red in SCENARIO : type(book is Product) == Boolean .
+red in SCENARIO : type(book isnt Product) == Boolean .
+red in SCENARIO : type(book as! Product) == Product .
+red in SCENARIO : type(book as! Product ?) == Product ? .
+red in SCENARIO : type(book as? Product ?) == Product ? .
+red in SCENARIO : type(book as? Product) .
+red in SCENARIO : type(book === flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book !== flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book is flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book isnt flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book as! flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book as? flag) == Undefined(InvalidReferentialExpression) .
