@@ -87,10 +87,16 @@ mod REFERENTIAL-TYPES is
   sorts ReferentialType SequentialType OptionalType RequiredType .
   subsorts RequiredType < OptionalType < SequentialType < ReferentialType < Type .
 
-  op _? : RequiredType -> OptionalType .
-  op InvalidTypeDeclaration : -> TypeError .
   var T : Type .
-  ceq T ? = Undefined(InvalidTypeDeclaration)
+
+  op _? : RequiredType -> OptionalType .
+  op InvalidOptionalTypeDeclaration : -> TypeError .
+  ceq T ? = Undefined(InvalidOptionalTypeDeclaration)
+    if not (T :: RequiredType) .
+
+  op _* : RequiredType -> SequentialType .
+  op InvalidSequentialTypeDeclaration : -> TypeError .
+  ceq T * = Undefined(InvalidSequentialTypeDeclaration)
     if not (T :: RequiredType) .
 endm
 

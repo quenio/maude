@@ -216,7 +216,7 @@ mod REFERENTIAL-EXPRESSION is
 
   op refEquality : Expression Operator Expression -> Bool .
   ceq refEquality(E1, OP, E2) = category(OP) == ReferentialEquality
-    if (type(E1) :: ReferentialType) /\ (type(E2) :: ReferentialType) .
+    if (type(E1) :: OptionalType) /\ (type(E2) :: OptionalType) .
 
   op typeCheck : Expression Operator Expression -> Bool .
   ceq typeCheck(E1, OP, E2) = category(OP) == TypeChecking
@@ -226,9 +226,13 @@ mod REFERENTIAL-EXPRESSION is
   ceq typeCast(E1, OP, E2) = category(OP) == TypeCasting
     if (type(E1) :: ReferentialType) /\ (E2 :: ReferentialType) .
 
-  op InvalidTypeCast : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidTypeCast)
+  op InvalidRequiredTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCast)
     if (OP == as?) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
+
+  op InvalidOptionalTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCast)
+    if (OP == as?) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
 
   pr BOOLEAN-TYPE .
   ceq type(E1 OP E2) = Boolean

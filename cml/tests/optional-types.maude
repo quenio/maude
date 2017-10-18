@@ -21,17 +21,19 @@ set show stats off .
 --- show components SCENARIO .
 --- show sorts SCENARIO .
 
-red in SCENARIO : type(flag) == Undefined(InvalidTypeDeclaration) .
+red in SCENARIO : type(flag) == Undefined(InvalidOptionalTypeDeclaration) .
 red in SCENARIO : type(flag or True) == Undefined(InvalidLogicalExpression) .
 red in SCENARIO : type(book) == Book ? .
+red in SCENARIO : type(book === book) == Boolean .
 red in SCENARIO : type(book === product) == Boolean .
+red in SCENARIO : type(book !== book) == Boolean .
 red in SCENARIO : type(book !== product) == Boolean .
 red in SCENARIO : type(book is Product) == Boolean .
 red in SCENARIO : type(book isnt Product) == Boolean .
 red in SCENARIO : type(book as! Product) == Product .
 red in SCENARIO : type(book as! Product ?) == Product ? .
 red in SCENARIO : type(book as? Product ?) == Product ? .
-red in SCENARIO : type(book as? Product) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(book as? Product) == Undefined(InvalidRequiredTypeCast) .
 red in SCENARIO : type(book === flag) == Undefined(InvalidReferentialExpression) .
 red in SCENARIO : type(book !== flag) == Undefined(InvalidReferentialExpression) .
 red in SCENARIO : type(book is flag) == Undefined(InvalidReferentialExpression) .
