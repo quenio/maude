@@ -204,11 +204,12 @@ mod REFERENTIAL-EXPRESSION is
   eq category(isnt)  = TypeChecking .
 
   op TypeCasting : -> Category .
-  ops as? as! : -> Operator .
+  ops as as? as! : -> Operator .
+  eq category(as) = TypeCasting .
   eq category(as?) = TypeCasting .
   eq category(as!) = TypeCasting .
 
-  pr REFERENTIAL-TYPES .
+  pr REFERENTIAL-TYPE .
   subsort ReferentialType < Expression .
 
   vars E1 E2 : Expression .
@@ -218,41 +219,57 @@ mod REFERENTIAL-EXPRESSION is
   ceq refEquality(E1, OP, E2) = category(OP) == ReferentialComparison
     if (type(E1) :: ReferentialType) /\ (type(E2) :: ReferentialType) .
 
-  op InvalidSubTypeComparison : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidSubTypeComparison)
-    if (category(OP) == ReferentialComparison) /\ not (requiredTypeOf(type(E1)) <:> requiredTypeOf(type(E2))) .
+  op UnrelatedTypeComparison : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(UnrelatedTypeComparison)
+    if (category(OP) == ReferentialComparison) /\ not (elementaryTypeOf(type(E1)) <:> elementaryTypeOf(type(E2))) .
 
   op typeCheck : Expression Operator Expression -> Bool .
   ceq typeCheck(E1, OP, E2) = category(OP) == TypeChecking
     if (type(E1) :: ReferentialType) /\ (E2 :: ReferentialType) .
 
-  op InvalidSubTypeCheck : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidSubTypeCheck)
-    if (category(OP) == TypeChecking) /\ not (requiredTypeOf(E2) <: requiredTypeOf(type(E1))) .
+  op UnrelatedTypeCheck : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(UnrelatedTypeCheck)
+    if (category(OP) == TypeChecking) /\ not (elementaryTypeOf(E2) <:> elementaryTypeOf(type(E1))) .
 
-  op InvalidRequiredTypeCheck : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCheck)
-    if (category(OP) == TypeChecking) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
-
-  op InvalidOptionalTypeCheck : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCheck)
-    if (category(OP) == TypeChecking) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
-
-  op InvalidSequentialTypeCheck : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidSequentialTypeCheck)
-    if (category(OP) == TypeChecking) /\ not (type(E1) :: SequentialType) /\ (E2 :: SequentialType) .
+  --- op InvalidRequiredTypeCheck : -> TypeError .
+  --- ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCheck)
+  ---   if (category(OP) == TypeChecking) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
+  ---
+  --- op InvalidOptionalTypeCheck : -> TypeError .
+  --- ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCheck)
+  ---   if (category(OP) == TypeChecking) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
+  ---
+  --- op InvalidSequentialTypeCheck : -> TypeError .
+  --- ceq type(E1 OP E2) = Undefined(InvalidSequentialTypeCheck)
+  ---   if (category(OP) == TypeChecking) /\ not (type(E1) :: SequentialType) /\ (E2 :: SequentialType) .
 
   op typeCast : Expression Operator Expression -> Bool .
   ceq typeCast(E1, OP, E2) = category(OP) == TypeCasting
     if (type(E1) :: ReferentialType) /\ (E2 :: ReferentialType) .
 
-  op InvalidRequiredTypeCast : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCast)
-    if (OP == as?) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
+  op UnnecessarilyForcedTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(UnnecessarilyForcedTypeCast)
+    if (OP == as!) /\ (type(E1) <: E2) .
 
-  op InvalidOptionalTypeCast : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCast)
-    if (OP == as?) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
+  op UnnecessarilyConditionalTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(UnnecessarilyConditionalTypeCast)
+    if (OP == as?) /\ (type(E1) <: E2) .
+
+  op InvalidSubTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidSubTypeCast)
+    if (OP == as) /\ (E2 <: type(E1)) .
+
+  op InvalidReferentialTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidReferentialTypeCast)
+    if (OP == as?) /\ (E1 :: ReferentialType) /\ (E2 :: ReferentialType) .
+
+  --- op InvalidRequiredTypeCast : -> TypeError .
+  --- ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCast)
+  ---   if (OP == as?) /\ not (type(E1) :: RequiredType) /\ (E2 :: RequiredType) .
+  ---
+  --- op InvalidOptionalTypeCast : -> TypeError .
+  --- ceq type(E1 OP E2) = Undefined(InvalidOptionalTypeCast)
+  ---   if (OP == as?) /\ not (type(E1) :: OptionalType) /\ (E2 :: OptionalType) .
 
   pr BOOLEAN-TYPE .
   ceq type(E1 OP E2) = Boolean
@@ -260,8 +277,8 @@ mod REFERENTIAL-EXPRESSION is
   ceq type(E1 OP E2) = E2
     if typeCast(E1, OP, E2) .
 
-  op InvalidReferentialExpression : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidReferentialExpression)
+  op InvalidNonReferentialOperand : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidNonReferentialOperand)
     if category(OP) == ReferentialComparison or
        category(OP) == TypeChecking or
        category(OP) == TypeCasting .

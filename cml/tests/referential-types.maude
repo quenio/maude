@@ -1,0 +1,78 @@
+
+load "../src/cml.maude" .
+
+mod SCENARIO is
+  pr CML .
+
+  op Book : -> ReferentialType .
+  op book : -> Expression .
+  eq type(book) = Book .
+
+  op Product : -> ReferentialType .
+  op product : -> Expression .
+  eq type(product) = Product .
+
+  op Order : -> ReferentialType .
+  op order : -> Expression .
+  eq type(order) = Order .
+
+  eq Book <: Product = true .
+
+  var T : Type .
+  ceq Order <: T = false if T =/= Order .
+  ceq T <: Order = false if T =/= Order .
+
+  op flag : -> Expression .
+  eq type(flag) = Boolean .
+endm
+
+set show stats off .
+--- set trace on .
+--- show components SCENARIO .
+--- show sorts SCENARIO .
+
+red in SCENARIO : type(book === product) == Boolean .
+red in SCENARIO : type(book !== product) == Boolean .
+
+red in SCENARIO : type(product === book) == Boolean .
+red in SCENARIO : type(product !== book) == Boolean .
+
+red in SCENARIO : type(book === order) == Undefined(UnrelatedTypeComparison) .
+red in SCENARIO : type(book !== order) == Undefined(UnrelatedTypeComparison) .
+
+red in SCENARIO : type(order === book) == Undefined(UnrelatedTypeComparison) .
+red in SCENARIO : type(order !== book) == Undefined(UnrelatedTypeComparison) .
+
+red in SCENARIO : type(book is Product) == Boolean .
+red in SCENARIO : type(book isnt Product) == Boolean .
+
+red in SCENARIO : type(product is Book) == Boolean .
+red in SCENARIO : type(product isnt Book) == Boolean .
+
+red in SCENARIO : type(book is Order) == Undefined(UnrelatedTypeCheck) .
+red in SCENARIO : type(book isnt Order) == Undefined(UnrelatedTypeCheck) .
+
+red in SCENARIO : type(book as Product) == Product .
+red in SCENARIO : type(book as! Product) == Undefined(UnnecessarilyForcedTypeCast) .
+red in SCENARIO : type(book as? Product) == Undefined(UnnecessarilyConditionalTypeCast) .
+
+red in SCENARIO : type(product as Book) == Undefined(InvalidSubTypeCast) .
+red in SCENARIO : type(product as! Book) == Book .
+red in SCENARIO : type(product as? Book) == Undefined(InvalidReferentialTypeCast).
+
+red in SCENARIO : type(book === flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book !== flag) == Undefined(InvalidNonReferentialOperand) .
+
+red in SCENARIO : type(flag is Product) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(flag isnt Product) == Undefined(InvalidNonReferentialOperand) .
+
+red in SCENARIO : type(book is flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book isnt flag) == Undefined(InvalidNonReferentialOperand) .
+
+red in SCENARIO : type(flag as Product) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(flag as! Product) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(flag as? Product) == Undefined(InvalidNonReferentialOperand) .
+
+red in SCENARIO : type(book as flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book as! flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book as? flag) == Undefined(InvalidNonReferentialOperand) .

@@ -81,30 +81,40 @@ mod PRIMITIVE-TYPES is
   pr STRING-TYPE .
 endm
 
-mod REFERENTIAL-TYPES is
+--- mod REFERENTIAL-TYPES is
+---   pr TYPE .
+---
+---   sorts ReferentialType SequentialType OptionalType RequiredType .
+---   subsorts RequiredType < OptionalType < SequentialType < ReferentialType < Type .
+---
+---   var T : Type .
+---
+---   op _? : RequiredType -> OptionalType .
+---   op InvalidOptionalTypeDeclaration : -> TypeError .
+---   ceq T ? = Undefined(InvalidOptionalTypeDeclaration)
+---     if not (T :: RequiredType) .
+---
+---   op _* : RequiredType -> SequentialType .
+---   op InvalidSequentialTypeDeclaration : -> TypeError .
+---   ceq T * = Undefined(InvalidSequentialTypeDeclaration)
+---     if not (T :: RequiredType) .
+---
+---   op elementaryTypeOf : ReferentialType -> ReferentialType .
+---   ceq elementaryTypeOf(T ?) = T if T :: ReferentialType .
+---   ceq elementaryTypeOf(T *) = T if T :: ReferentialType .
+--- endm
+
+mod REFERENTIAL-TYPE is
   pr TYPE .
+  sort ReferentialType .
+  subsort ReferentialType < Type .
 
-  sorts ReferentialType SequentialType OptionalType RequiredType .
-  subsorts RequiredType < OptionalType < SequentialType < ReferentialType < Type .
-
-  var T : Type .
-
-  op _? : RequiredType -> OptionalType .
-  op InvalidOptionalTypeDeclaration : -> TypeError .
-  ceq T ? = Undefined(InvalidOptionalTypeDeclaration)
-    if not (T :: RequiredType) .
-
-  op _* : RequiredType -> SequentialType .
-  op InvalidSequentialTypeDeclaration : -> TypeError .
-  ceq T * = Undefined(InvalidSequentialTypeDeclaration)
-    if not (T :: RequiredType) .
-
-  op requiredTypeOf : ReferentialType -> RequiredType .
-  ceq requiredTypeOf(T ?) = T if T :: ReferentialType .
-  ceq requiredTypeOf(T *) = T if T :: ReferentialType .
+  var T : ReferentialType .
+  op elementaryTypeOf : ReferentialType -> ReferentialType .
+  eq elementaryTypeOf(T) = T .
 endm
 
 mod TYPES is
   pr PRIMITIVE-TYPES .
-  pr REFERENTIAL-TYPES .
+  pr REFERENTIAL-TYPE .
 endm
