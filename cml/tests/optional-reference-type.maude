@@ -1,0 +1,12 @@
+
+red in SCENARIO : type(book? as Product) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(book? as! Product) == Product .
+red in SCENARIO : type(book? as? Product) == Undefined(OutOfBoundsTypeCast) .
+
+red in SCENARIO : type(book? as Product ?) == Product ? .
+red in SCENARIO : type(book? as! Product ?) == Undefined(UnnecessarilyForcedTypeCast) .
+red in SCENARIO : type(book? as? Product ?) == Undefined(UnnecessarilyConditionalTypeCast) .
+
+red in SCENARIO : type(book? as Product *) == Product * .
+red in SCENARIO : type(book? as! Product *) == Undefined(UnnecessarilyForcedTypeCast) .
+red in SCENARIO : type(book? as? Product *) == Undefined(UnnecessarilyConditionalTypeCast) .

@@ -76,24 +76,24 @@ red in SCENARIO : type(books is orders) == Undefined(ExpectedTypeCheckOperand) .
 red in SCENARIO : type(books isnt orders) == Undefined(ExpectedTypeCheckOperand) .
 
 red in SCENARIO : type(books as Product) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(books as! Product) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as! Product) == Product .
 red in SCENARIO : type(books as? Product) == Undefined(OutOfBoundsTypeCast) .
 
 red in SCENARIO : type(books as Product ?) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(books as! Product ?) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(books as? Product ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as! Product ?) == Product ? .
+red in SCENARIO : type(books as? Product ?) == Product ? .
 
 red in SCENARIO : type(books as Product *) == Product * .
 red in SCENARIO : type(books as! Product *) == Undefined(UnnecessarilyForcedTypeCast) .
 red in SCENARIO : type(books as? Product *) == Undefined(UnnecessarilyConditionalTypeCast) .
 
 red in SCENARIO : type(products as Book) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(products as! Book) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as! Book) == Book .
 red in SCENARIO : type(products as? Book) == Undefined(OutOfBoundsTypeCast) .
 
 red in SCENARIO : type(products as Book ?) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(products as! Book ?) == Undefined(OutOfBoundsTypeCast) .
-red in SCENARIO : type(products as? Book ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as! Book ?) == Book ? .
+red in SCENARIO : type(products as? Book ?) == Book ? .
 
 red in SCENARIO : type(products as Book *) == Undefined(InvalidSubTypeCast) .
 red in SCENARIO : type(products as! Book *) == Book * .

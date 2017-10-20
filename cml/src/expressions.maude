@@ -328,6 +328,8 @@ mod TYPE-CASTING is
   op OutOfBoundsTypeCast : -> TypeError .
   ceq type(E1 OP E2) = Undefined(OutOfBoundsTypeCast)
     if (category(OP) == TypeCasting) /\
+       (OP =/= as!) /\
+       (OP == as? implies minCardinality(E2) == one) /\
        not (type(E1) <* E2) .
 
   op UnnecessarilyForcedTypeCast : -> TypeError .
@@ -356,7 +358,8 @@ mod TYPE-CASTING is
 
   ceq type(E1 OP E2) = E2
     if (category(OP) == TypeCasting) /\
-       (type(E1) <* E2) /\
+       (OP == as implies type(E1) <* E2) /\
+       (OP == as? implies minCardinality(E2) == zero) /\
        (elementaryTypeOf(type(E1)) <:> elementaryTypeOf(E2)) .
 
   op InvalidTypeCast : -> TypeError .
