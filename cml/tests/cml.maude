@@ -1,5 +1,4 @@
 load "./types.maude" .
-load "./boolean-type.maude" .
 load "./arithmetic.maude" .
 load "./relational-expression.maude" .
 load "./conditional-expression.maude" .

@@ -30,18 +30,21 @@ mod SCENARIO is
   eq type(flag) = Boolean .
   eq type(valid) = Boolean .
 
-  ops count size amount : -> Expression .
+  ops count count? size amount amount? : -> Expression .
   eq type(count) = Integer .
+  eq type(count?) = Integer ? .
   eq type(size) = Long .
   eq type(amount) = Decimal .
+  eq type(amount?) = Decimal ? .
 
   ops rate speed : -> Expression .
   eq type(rate) = Float .
   eq type(speed) = Double .
 
-  ops name city : -> Expression .
+  ops name city cities : -> Expression .
   eq type(name) = String .
   eq type(city) = String .
+  eq type(cities) = String * .
 endm
 
 set show stats off .

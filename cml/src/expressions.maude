@@ -380,12 +380,12 @@ mod CONDITIONAL-EXPRESSION is
   op _or?_ : Expression Expression -> Expression .
   ceq type(Expr or? Expr2) = type(
     elementaryTypeOf(type(Expr)),
-    zero,
+    minCardinality(type(Expr), type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
   ) if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
   ceq type(Expr or? Expr2) = type(
     elementaryTypeOf(type(Expr2)),
-    zero,
+    minCardinality(type(Expr), type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
   ) if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
 

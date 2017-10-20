@@ -20,9 +20,14 @@ red in SCENARIO : type(if valid then book else order) == Undefined(IncompatibleC
 red in SCENARIO : type(if valid then book? else order) == Undefined(IncompatibleConditionalOperands) .
 red in SCENARIO : type(if valid then book? else orders) == Undefined(IncompatibleConditionalOperands) .
 
---- red in SCENARIO : type(count or? amount) .
+red in SCENARIO : type(count or? amount) == Decimal .
+red in SCENARIO : type(count or? amount?) == Decimal ? .
+red in SCENARIO : type(count? or? amount) == Decimal ? .
+red in SCENARIO : type(city or? cities) == String * .
+red in SCENARIO : type(count or? cities) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(count or? book?) == Undefined(IncompatibleConditionalOperands) .
 
-red in SCENARIO : type(book or? product) == Product ? .
+red in SCENARIO : type(book or? product) == Product .
 red in SCENARIO : type(book? or? product?) == Product ? .
 red in SCENARIO : type(books or? products) == Product * .
 

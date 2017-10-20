@@ -38,6 +38,7 @@ mod TYPE is
   op minCardinality : Type -> Cardinality .
   eq minCardinality(T ?) = zero .
   eq minCardinality(T *) = zero .
+  eq minCardinality(T) = one .
 
   op minCardinality : Type Type -> Cardinality .
   ceq minCardinality(T1, T2) = minCardinality(T1)
@@ -47,6 +48,7 @@ mod TYPE is
   op maxCardinality : Type -> Cardinality .
   eq maxCardinality(T ?) = one .
   eq maxCardinality(T *) = many .
+  eq maxCardinality(T) = one .
 
   op maxCardinality : Type Type -> Cardinality .
   ceq maxCardinality(T1, T2) = maxCardinality(T2)
@@ -58,22 +60,22 @@ mod TYPE is
                 maxCardinality(T1) <= maxCardinality(T2) .
 
   op elementaryTypeOf : Type -> Type .
+  eq elementaryTypeOf(T ?) = T .
+  eq elementaryTypeOf(T *) = T .
+  eq elementaryTypeOf(T) = T .
+
+  sorts TypeError .
+  op Undefined : TypeError -> Type .
 
   op InvalidCardinalityDeclaration : -> TypeError .
 
   op _? : Type -> Type .
   ceq T ? = Undefined(InvalidCardinalityDeclaration)
-    if not (maxCardinality(elementaryTypeOf(T)) == one) .
+    if minCardinality(T) =/= one or maxCardinality(T) =/= one .
 
   op _* : Type -> Type .
   ceq T * = Undefined(InvalidCardinalityDeclaration)
-    if not (maxCardinality(elementaryTypeOf(T)) == one) .
-
-  sorts TypeError .
-  op Undefined : TypeError -> Type .
-
-  op single : Type -> Bool .
-  eq single(T) = minCardinality(T) == one and maxCardinality(T) == one .
+    if minCardinality(T) =/= one or maxCardinality(T) =/= one .
 
   op type : Type Cardinality Cardinality -> Type .
   eq type(T, one, one) = T .
@@ -101,11 +103,6 @@ mod BOOLEAN-TYPE is
 
   ceq B <: T = false if T =/= B .
   ceq T <: B = false if T =/= B .
-
-  ceq elementaryTypeOf(T) = T if T :: BooleanType .
-
-  ceq minCardinality(T) = one if T :: BooleanType .
-  ceq maxCardinality(T) = one if T :: BooleanType .
 endm
 
 mod NUMERIC-TYPES is
@@ -123,8 +120,17 @@ mod NUMERIC-TYPES is
   op numeric : Type -> Bool .
 
   eq Byte <: Short = true .
+  eq Byte <: Integer = true .
+  eq Byte <: Long = true .
+  eq Byte <: Decimal = true .
+
   eq Short <: Integer = true .
+  eq Short <: Long = true .
+  eq Short <: Decimal = true .
+
   eq Integer <: Long = true .
+  eq Integer <: Decimal = true .
+
   eq Long <: Decimal = true .
 
   var N : NumericType .
@@ -135,11 +141,6 @@ mod NUMERIC-TYPES is
 
   eq numeric(N) = true .
   eq numeric(T) = false .
-
-  ceq elementaryTypeOf(T) = T if T :: NumericType .
-
-  ceq minCardinality(T) = one if T :: NumericType .
-  ceq maxCardinality(T) = one if T :: NumericType .
 endm
 
 mod FLOATING-POINT-TYPES is
@@ -163,11 +164,6 @@ mod FLOATING-POINT-TYPES is
 
   eq floating_point(F) = true .
   eq floating_point(T) = false .
-
-  ceq elementaryTypeOf(T) = T if T :: FloatingPointType .
-
-  ceq minCardinality(T) = one if T :: FloatingPointType .
-  ceq maxCardinality(T) = one if T :: FloatingPointType .
 endm
 
 mod STRING-TYPE is
@@ -180,11 +176,6 @@ mod STRING-TYPE is
   eq String <: String = true .
   ceq String <: T = false if T =/= String .
   ceq T <: String = false if T =/= String .
-
-  ceq elementaryTypeOf(T) = T if T == String .
-
-  ceq minCardinality(T) = one if T == String .
-  ceq maxCardinality(T) = one if T == String .
 endm
 
 mod PRIMITIVE-TYPES is
@@ -199,15 +190,6 @@ mod REFERENCE-TYPE is
 
   sort ReferenceType .
   subsort ReferenceType < Type .
-
-  var T : Type .
-
-  ceq elementaryTypeOf(T) = T if T :: ReferenceType .
-  ceq elementaryTypeOf(T ?) = T if T :: ReferenceType .
-  ceq elementaryTypeOf(T *) = T if T :: ReferenceType .
-
-  ceq minCardinality(T) = one if T :: ReferenceType .
-  ceq maxCardinality(T) = one if T :: ReferenceType .
 endm
 
 mod TYPES is
