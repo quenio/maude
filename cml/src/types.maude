@@ -77,10 +77,15 @@ mod TYPE is
   ceq T * = Undefined(InvalidCardinalityDeclaration)
     if minCardinality(T) =/= one or maxCardinality(T) =/= one .
 
+  op _+ : Type -> Type .
+  ceq T + = Undefined(InvalidCardinalityDeclaration)
+    if minCardinality(T) =/= one or maxCardinality(T) =/= one .
+
   op type : Type Cardinality Cardinality -> Type .
   eq type(T, one, one) = T .
   eq type(T, zero, one) = (T ?) .
   eq type(T, zero, many) = (T *) .
+  eq type(T, one, many) = (T +) .
 endm
 
 mod VALUE-TYPE is

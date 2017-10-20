@@ -4,4 +4,5 @@ load "./relational-expression.maude" .
 load "./conditional-expression.maude" .
 load "./str-concat.maude" .
 load "./single-reference-type.maude" .
+load "./optional-reference-type.maude" .
 load "./sequential-reference-type.maude" .

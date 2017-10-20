@@ -20,26 +20,30 @@ red in SCENARIO : type(if valid then book else order) == Undefined(IncompatibleC
 red in SCENARIO : type(if valid then book? else order) == Undefined(IncompatibleConditionalOperands) .
 red in SCENARIO : type(if valid then book? else orders) == Undefined(IncompatibleConditionalOperands) .
 
-red in SCENARIO : type(count or? amount) == Decimal .
-red in SCENARIO : type(count or? amount?) == Decimal ? .
-red in SCENARIO : type(count? or? amount) == Decimal ? .
-red in SCENARIO : type(city or? cities) == String * .
-red in SCENARIO : type(count or? cities) == Undefined(IncompatibleConditionalOperands) .
-red in SCENARIO : type(count or? book?) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(count? or? cities) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(count? or? book?) == Undefined(IncompatibleConditionalOperands) .
 
-red in SCENARIO : type(book or? product) == Product .
+red in SCENARIO : type(count? or? amount) == Decimal .
+red in SCENARIO : type(count? or? amount?) == Decimal ? .
+
+red in SCENARIO : type(book? or? product) == Product .
 red in SCENARIO : type(book? or? product?) == Product ? .
+
 red in SCENARIO : type(books or? products) == Product * .
-
-red in SCENARIO : type(book or? product?) == Product ? .
-red in SCENARIO : type(book? or? product) == Product ? .
-
-red in SCENARIO : type(book or? products) == Product * .
-red in SCENARIO : type(books or? product) == Product * .
+red in SCENARIO : type(books or? product) == Product + .
 
 red in SCENARIO : type(book? or? products) == Product * .
 red in SCENARIO : type(books or? product?) == Product * .
 
-red in SCENARIO : type(book or? order) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(count or? amount) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(count or? amount?) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(count or? cities) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(count or? book?) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(book or? product) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(book or? product?) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(book or? products) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(city or? cities) == Undefined(UnnecessaryConditionalExpression) .
+red in SCENARIO : type(book or? order) == Undefined(UnnecessaryConditionalExpression) .
+
 red in SCENARIO : type(book? or? order) == Undefined(IncompatibleConditionalOperands) .
 red in SCENARIO : type(book? or? orders) == Undefined(IncompatibleConditionalOperands) .

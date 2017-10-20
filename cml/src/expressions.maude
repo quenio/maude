@@ -381,14 +381,19 @@ mod CONDITIONAL-EXPRESSION is
   ) .
 
   op _or?_ : Expression Expression -> Expression .
+
+  op UnnecessaryConditionalExpression : -> TypeError .
+  ceq type(Expr or? Expr2) = Undefined(UnnecessaryConditionalExpression)
+    if minCardinality(type(Expr)) =/= zero .
+
   ceq type(Expr or? Expr2) = type(
     elementaryTypeOf(type(Expr)),
-    minCardinality(type(Expr), type(Expr2)),
+    minCardinality(type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
   ) if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
   ceq type(Expr or? Expr2) = type(
     elementaryTypeOf(type(Expr2)),
-    minCardinality(type(Expr), type(Expr2)),
+    minCardinality(type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
   ) if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
 
