@@ -123,11 +123,11 @@ red in SCENARIO : type(product as! Book) == Book .
 red in SCENARIO : type(product as? Book) == Undefined(InvalidReferentialTypeOperand) .
 
 red in SCENARIO : type(product as Book ?) == Undefined(InvalidSubTypeCast) .
-red in SCENARIO : type(product as! Book ?) == Undefined(InvalidSequentialTypeOperand) .
+red in SCENARIO : type(product as! Book ?) == Book ? .
 red in SCENARIO : type(product as? Book ?) == Book ? .
 
 red in SCENARIO : type(product as Book *) == Undefined(InvalidSubTypeCast) .
-red in SCENARIO : type(product as! Book *) == Undefined(InvalidSequentialTypeOperand) .
+red in SCENARIO : type(product as! Book *) == Book * .
 red in SCENARIO : type(product as? Book *) == Book * .
 
 red in SCENARIO : type(book as flag) == Undefined(ExpectedTypeCastOperand) .
