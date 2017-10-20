@@ -4,27 +4,29 @@ load "../src/cml.maude" .
 mod SCENARIO is
   pr CML .
 
-  op flag : -> Expression .
-  eq type(flag) = Boolean * .
-
-  op Book : -> RequiredType .
-  op books : -> Expression .
+  op Book : -> ReferentialType .
+  ops book books : -> Expression .
+  eq type(book) = Book .
   eq type(books) = Book * .
 
-  op Product : -> RequiredType .
-  op product : -> Expression .
+  op Product : -> ReferentialType .
+  ops product products : -> Expression .
   eq type(product) = Product .
+  eq type(products) = Product * .
 
-  op _<:_ : ReferentialType ReferentialType -> Bool .
-  eq Book <: Product = true .
-
-  op Order : -> RequiredType .
-  op orders : -> Expression .
+  op Order : -> ReferentialType .
+  ops order orders : -> Expression .
+  eq type(order) = Order .
   eq type(orders) = Order * .
+
+  eq Book <: Product = true .
 
   var T : Type .
   ceq Order <: T = false if T =/= Order .
   ceq T <: Order = false if T =/= Order .
+
+  op flag : -> Expression .
+  eq type(flag) = Boolean .
 endm
 
 set show stats off .
@@ -32,30 +34,110 @@ set show stats off .
 --- show components SCENARIO .
 --- show sorts SCENARIO .
 
-red in SCENARIO : type(flag) == Undefined(InvalidSequentialTypeDeclaration) .
-red in SCENARIO : type(flag or True) == Undefined(InvalidLogicalExpression) .
-red in SCENARIO : type(books) == Book * .
-red in SCENARIO : type(books === books) == Boolean .
-red in SCENARIO : type(books === product) == Boolean .
-red in SCENARIO : type(books !== books) == Boolean .
-red in SCENARIO : type(books !== product) == Boolean .
-red in SCENARIO : type(books is Product *) == Boolean .
-red in SCENARIO : type(books is Product ?) == Undefined(InvalidOptionalTypeCheck) .
-red in SCENARIO : type(books is Product) == Undefined(InvalidRequiredTypeCheck) .
-red in SCENARIO : type(orders === product) == Undefined(InvalidSubTypeComparison) .
-red in SCENARIO : type(orders !== product) == Undefined(InvalidSubTypeComparison) .
-red in SCENARIO : type(orders is Product) == Undefined(InvalidSubTypeCheck) .
-red in SCENARIO : type(orders is Product ?) == Undefined(InvalidSubTypeCheck) .
-red in SCENARIO : type(orders is Product *) == Undefined(InvalidSubTypeCheck) .
-red in SCENARIO : type(books as! Product) == Product .
-red in SCENARIO : type(books as! Product ?) == Product ? .
-red in SCENARIO : type(books as! Product *) == Product * .
-red in SCENARIO : type(books as? Product *) == Product * .
-red in SCENARIO : type(books as? Product ?) == Undefined(InvalidOptionalTypeCast)  .
-red in SCENARIO : type(books as? Product) == Undefined(InvalidRequiredTypeCast) .
-red in SCENARIO : type(books === flag) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books !== flag) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books is flag) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books isnt flag) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books as! flag) == Undefined(InvalidReferentialExpression) .
-red in SCENARIO : type(books as? flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(books === product) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== product) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(product === books) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(product !== books) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === order) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== order) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(order === books) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(order !== books) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === Boolean) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== Boolean) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === Book) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== Book) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === flag) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== flag) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === book) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== book) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === products) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== products) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books === orders) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books !== orders) == Undefined(ExpectedReferentialTypeOperands) .
+
+red in SCENARIO : type(books is Product) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(books isnt Product) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(books is Product ?) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(books isnt Product ?) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(book is Product *) == Boolean .
+red in SCENARIO : type(book isnt Product *) == Boolean .
+
+red in SCENARIO : type(products is Book) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(products isnt Book) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(products is Book ?) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(products isnt Book ?) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(products is Book *) == Boolean .
+red in SCENARIO : type(products isnt Book *) == Boolean .
+
+red in SCENARIO : type(books is Order) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(books isnt Order) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(books is Order ?) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(books isnt Order ?) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(books is Order *) == Undefined(UnrelatedTypeCheck) .
+red in SCENARIO : type(books isnt Order *) == Undefined(UnrelatedTypeCheck) .
+
+red in SCENARIO : type(books is Boolean) == Undefined(OutOfBoundsTypeCheck) .
+red in SCENARIO : type(books isnt Boolean) == Undefined(OutOfBoundsTypeCheck) .
+
+red in SCENARIO : type(books is flag) == Undefined(ExpectedTypeCheckOperand) .
+red in SCENARIO : type(books isnt flag) == Undefined(ExpectedTypeCheckOperand) .
+
+red in SCENARIO : type(books is books) == Undefined(ExpectedTypeCheckOperand) .
+red in SCENARIO : type(books isnt books) == Undefined(ExpectedTypeCheckOperand) .
+
+red in SCENARIO : type(books is products) == Undefined(ExpectedTypeCheckOperand) .
+red in SCENARIO : type(books isnt products) == Undefined(ExpectedTypeCheckOperand) .
+
+red in SCENARIO : type(books is orders) == Undefined(ExpectedTypeCheckOperand) .
+red in SCENARIO : type(books isnt orders) == Undefined(ExpectedTypeCheckOperand) .
+
+red in SCENARIO : type(books as Product) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as! Product) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as? Product) == Undefined(OutOfBoundsTypeCast) .
+
+red in SCENARIO : type(books as Product ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as! Product ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(books as? Product ?) == Undefined(OutOfBoundsTypeCast) .
+
+red in SCENARIO : type(books as Product *) == Product * .
+red in SCENARIO : type(books as! Product *) == Undefined(UnnecessarilyForcedTypeCast) .
+red in SCENARIO : type(books as? Product *) == Undefined(UnnecessarilyConditionalTypeCast) .
+
+red in SCENARIO : type(products as Book) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as! Book) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as? Book) == Undefined(OutOfBoundsTypeCast) .
+
+red in SCENARIO : type(products as Book ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as! Book ?) == Undefined(OutOfBoundsTypeCast) .
+red in SCENARIO : type(products as? Book ?) == Undefined(OutOfBoundsTypeCast) .
+
+red in SCENARIO : type(products as Book *) == Undefined(InvalidSubTypeCast) .
+red in SCENARIO : type(products as! Book *) == Book * .
+red in SCENARIO : type(products as? Book *) == Book * .
+
+red in SCENARIO : type(books as flag) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as! flag) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as? flag) == Undefined(ExpectedTypeCastOperand) .
+
+red in SCENARIO : type(books as products) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as! products) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as? products) == Undefined(ExpectedTypeCastOperand) .
+
+red in SCENARIO : type(books as orders) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as! orders) == Undefined(ExpectedTypeCastOperand) .
+red in SCENARIO : type(books as? orders) == Undefined(ExpectedTypeCastOperand) .

@@ -214,8 +214,8 @@ mod REFERENTIAL-EXPRESSION is
        (type(E1) :: ReferentialType) /\
        (type(E2) :: ReferentialType) .
 
-  op InvalidReferentialExpression : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidReferentialExpression)
+  op ExpectedReferentialTypeOperands : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(ExpectedReferentialTypeOperands)
     if category(OP) == ReferentialExpression .
 endm
 
@@ -232,10 +232,14 @@ mod TYPE-CHECKING is
   vars E1 E2 : Expression .
   var OP : Operator .
 
+  op ExpectedTypeCheckOperand : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(ExpectedTypeCheckOperand)
+    if (category(OP) == TypeChecking) /\
+       not (E2 :: Type) .
+
   op OutOfBoundsTypeCheck : -> TypeError .
   ceq type(E1 OP E2) = Undefined(OutOfBoundsTypeCheck)
     if (category(OP) == TypeChecking) /\
-       (elementaryTypeOf(type(E1)) <:> elementaryTypeOf(E2)) /\
        not (type(E1) <* E2) .
 
   op UnrelatedTypeCheck : -> TypeError .
@@ -267,6 +271,16 @@ mod TYPE-CASTING is
 
   vars E1 E2 : Expression .
   var OP : Operator .
+
+  op ExpectedTypeCastOperand : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(ExpectedTypeCastOperand)
+    if (category(OP) == TypeCasting) /\
+       not (E2 :: Type) .
+
+  op OutOfBoundsTypeCast : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(OutOfBoundsTypeCast)
+    if (category(OP) == TypeCasting) /\
+       not (type(E1) <* E2) .
 
   op UnnecessarilyForcedTypeCast : -> TypeError .
   ceq type(E1 OP E2) = Undefined(UnnecessarilyForcedTypeCast)

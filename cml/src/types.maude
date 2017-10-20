@@ -1,95 +1,5 @@
 
-mod TYPE is
-  sorts Type .
-
-  op _<:_ : Type Type -> Bool .
-  var T : Type .
-  eq T <: T = true .
-
-  op _<:>_ : Type Type -> Bool .
-  var X Y Z : Type .
-  eq X <:> Y = X <: Y or Y <: X .
-
-  sorts TypeError .
-  op Undefined : TypeError -> Type .
-endm
-
-mod BOOLEAN-TYPE is
-  pr TYPE .
-
-  sort BooleanType .
-  subsort BooleanType < Type .
-
-  op Boolean : -> BooleanType .
-endm
-
-mod NUMERIC-TYPES is
-  pr TYPE .
-
-  sort NumericType .
-  subsort NumericType < Type .
-
-  op Byte : -> NumericType .
-  op Short : -> NumericType .
-  op Integer : -> NumericType .
-  op Long : -> NumericType .
-  op Decimal : -> NumericType .
-
-  op numeric : Type -> Bool .
-
-  var T1 : NumericType .
-  eq numeric(T1) = true .
-
-  var T2 : Type .
-  eq numeric(T2) = false .
-
-  eq Byte <: Short = true .
-  eq Short <: Integer = true .
-  eq Integer <: Long = true .
-  eq Long <: Decimal = true .
-endm
-
-mod FLOATING-POINT-TYPES is
-  pr TYPE .
-
-  sort FloatingPointType .
-  subsort FloatingPointType < Type .
-
-  op Float : -> FloatingPointType .
-  op Double : -> FloatingPointType .
-
-  op floating_point : Type -> Bool .
-
-  var T1 : FloatingPointType .
-  eq floating_point(T1) = true .
-
-  var T2 : Type .
-  eq floating_point(T2) = false .
-
-  eq Float <: Double = true .
-endm
-
-mod STRING-TYPE is
-  pr TYPE .
-  op String : -> Type .
-endm
-
-mod PRIMITIVE-TYPES is
-  pr BOOLEAN-TYPE .
-  pr NUMERIC-TYPES .
-  pr FLOATING-POINT-TYPES .
-  pr STRING-TYPE .
-endm
-
-mod SEQUENTIAL-TYPE is
-  pr TYPE .
-
-  sorts SequentialType .
-  subsorts SequentialType < Type .
-
-  op _? : Type -> SequentialType .
-  op _* : Type -> SequentialType .
-
+mod CARDINALITY is
   sort Cardinality .
 
   op zero : -> Cardinality .
@@ -109,29 +19,156 @@ mod SEQUENTIAL-TYPE is
   op _>=_ : Cardinality Cardinality -> Bool .
   var C1 C2 : Cardinality .
   eq C1 >= C2 = C2 <= C1 .
+endm
 
+mod TYPE is
+  pr CARDINALITY .
+
+  sorts Type .
+
+  op _<:_ : Type Type -> Bool .
   var T : Type .
+  eq T <: T = true .
 
-  op minCardinality : SequentialType -> Cardinality .
-  eq minCardinality(T ?) = zero .
-  eq minCardinality(T *) = zero .
-  eq minCardinality(T) = one .
+  op _<:>_ : Type Type -> Bool .
+  var X Y Z : Type .
+  eq X <:> Y = X <: Y or Y <: X .
 
-  op maxCardinality : SequentialType -> Cardinality .
-  eq maxCardinality(T ?) = one .
-  eq maxCardinality(T *) = many .
-  eq maxCardinality(T) = one .
+  op minCardinality : Type -> Cardinality .
+  op maxCardinality : Type -> Cardinality .
 
-  var T1 T2 : SequentialType .
-
-  op matchCardinality : SequentialType SequentialType -> Bool .
-  eq matchCardinality(T1, T2) = minCardinality(T1) == minCardinality(T2) and
-                                maxCardinality(T1) == maxCardinality(T2) .
-
-  op _<*_ : SequentialType SequentialType -> Bool .
+  op _<*_ : Type Type -> Bool .
+  var T1 T2 : Type .
   eq T1 <* T2 = minCardinality(T1) >= minCardinality(T2) and
                 maxCardinality(T1) <= maxCardinality(T2) .
 
+  op elementaryTypeOf : Type -> Type .
+
+  sorts TypeError .
+  op Undefined : TypeError -> Type .
+endm
+
+mod BOOLEAN-TYPE is
+  pr TYPE .
+
+  sort BooleanType .
+  subsort BooleanType < Type .
+
+  op Boolean : -> BooleanType .
+
+  var T : Type .
+  var B : BooleanType .
+
+  ceq B <: T = false if T =/= B .
+  ceq T <: B = false if T =/= B .
+
+  ceq elementaryTypeOf(T) = T if T :: BooleanType .
+
+  ceq minCardinality(T) = one if T :: BooleanType .
+  ceq maxCardinality(T) = one if T :: BooleanType .
+endm
+
+mod NUMERIC-TYPES is
+  pr TYPE .
+
+  sort NumericType .
+  subsort NumericType < Type .
+
+  op Byte : -> NumericType .
+  op Short : -> NumericType .
+  op Integer : -> NumericType .
+  op Long : -> NumericType .
+  op Decimal : -> NumericType .
+
+  op numeric : Type -> Bool .
+
+  eq Byte <: Short = true .
+  eq Short <: Integer = true .
+  eq Integer <: Long = true .
+  eq Long <: Decimal = true .
+
+  var N : NumericType .
+  var T : Type .
+
+  ceq N <: T = false if T =/= N .
+  ceq T <: N = false if T =/= N .
+
+  eq numeric(N) = true .
+  eq numeric(T) = false .
+
+  ceq elementaryTypeOf(T) = T if T :: NumericType .
+
+  ceq minCardinality(T) = one if T :: NumericType .
+  ceq maxCardinality(T) = one if T :: NumericType .
+endm
+
+mod FLOATING-POINT-TYPES is
+  pr TYPE .
+
+  sort FloatingPointType .
+  subsort FloatingPointType < Type .
+
+  op Float : -> FloatingPointType .
+  op Double : -> FloatingPointType .
+
+  op floating_point : Type -> Bool .
+
+  var T : Type .
+  var F : FloatingPointType .
+
+  eq Float <: Double = true .
+
+  ceq F <: T = false if T =/= F .
+  ceq T <: F = false if T =/= F .
+
+  eq floating_point(F) = true .
+  eq floating_point(T) = false .
+
+  ceq elementaryTypeOf(T) = T if T :: FloatingPointType .
+
+  ceq minCardinality(T) = one if T :: FloatingPointType .
+  ceq maxCardinality(T) = one if T :: FloatingPointType .
+endm
+
+mod STRING-TYPE is
+  pr TYPE .
+  op String : -> Type .
+
+  var T : Type .
+
+  eq String <: String = true .
+  ceq String <: T = false if T =/= String .
+  ceq T <: String = false if T =/= String .
+
+  ceq elementaryTypeOf(T) = T if T == String .
+
+  ceq minCardinality(T) = one if T == String .
+  ceq maxCardinality(T) = one if T == String .
+endm
+
+mod PRIMITIVE-TYPES is
+  pr BOOLEAN-TYPE .
+  pr NUMERIC-TYPES .
+  pr FLOATING-POINT-TYPES .
+  pr STRING-TYPE .
+endm
+
+mod SEQUENTIAL-TYPE is
+  pr TYPE .
+
+  sorts SequentialType .
+  subsorts SequentialType < Type .
+
+  op _? : Type -> SequentialType .
+  op _* : Type -> SequentialType .
+
+  var T : Type .
+
+  eq minCardinality(T ?) = zero .
+  eq minCardinality(T *) = zero .
+
+  eq maxCardinality(T ?) = one .
+  eq maxCardinality(T *) = many .
 endm
 
 mod REFERENTIAL-TYPE is
@@ -148,10 +185,12 @@ mod REFERENTIAL-TYPE is
   ceq T * = Undefined(InvalidSequentialTypeDeclaration)
     if not (T :: ReferentialType) .
 
-  op elementaryTypeOf : Type -> ReferentialType .
   ceq elementaryTypeOf(T) = T if T :: ReferentialType .
   ceq elementaryTypeOf(T ?) = T if T :: ReferentialType .
   ceq elementaryTypeOf(T *) = T if T :: ReferentialType .
+
+  ceq minCardinality(T) = one if T :: ReferentialType .
+  ceq maxCardinality(T) = one if T :: ReferentialType .
 endm
 
 mod TYPES is
