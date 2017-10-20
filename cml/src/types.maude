@@ -81,40 +81,62 @@ mod PRIMITIVE-TYPES is
   pr STRING-TYPE .
 endm
 
---- mod REFERENTIAL-TYPES is
----   pr TYPE .
----
----   sorts ReferentialType SequentialType OptionalType RequiredType .
----   subsorts RequiredType < OptionalType < SequentialType < ReferentialType < Type .
----
----   var T : Type .
----
----   op _? : RequiredType -> OptionalType .
----   op InvalidOptionalTypeDeclaration : -> TypeError .
----   ceq T ? = Undefined(InvalidOptionalTypeDeclaration)
----     if not (T :: RequiredType) .
----
----   op _* : RequiredType -> SequentialType .
----   op InvalidSequentialTypeDeclaration : -> TypeError .
----   ceq T * = Undefined(InvalidSequentialTypeDeclaration)
----     if not (T :: RequiredType) .
----
----   op elementaryTypeOf : ReferentialType -> ReferentialType .
----   ceq elementaryTypeOf(T ?) = T if T :: ReferentialType .
----   ceq elementaryTypeOf(T *) = T if T :: ReferentialType .
---- endm
+mod SEQUENTIAL-TYPE is
+  pr TYPE .
+
+  sorts SequentialType .
+  subsorts SequentialType < Type .
+
+  op _? : Type -> SequentialType .
+  op _* : Type -> SequentialType .
+
+  sort Cardinality .
+
+  op zero : -> Cardinality .
+  op one : -> Cardinality .
+  op many : -> Cardinality .
+
+  var T : Type .
+
+  op minCardinality : SequentialType -> Cardinality .
+  eq minCardinality(T ?) = zero .
+  eq minCardinality(T *) = zero .
+  eq minCardinality(T) = one .
+
+  op maxCardinality : SequentialType -> Cardinality .
+  eq maxCardinality(T ?) = one .
+  eq maxCardinality(T *) = many .
+  eq maxCardinality(T) = one .
+
+  var T1 T2 : SequentialType .
+
+  op matchCardinality : SequentialType SequentialType -> Bool .
+  eq matchCardinality(T1, T2) = minCardinality(T1) == minCardinality(T2) and
+                                maxCardinality(T1) == maxCardinality(T2) .
+endm
 
 mod REFERENTIAL-TYPE is
-  pr TYPE .
-  sort ReferentialType .
-  subsort ReferentialType < Type .
+  pr SEQUENTIAL-TYPE .
 
-  var T : ReferentialType .
-  op elementaryTypeOf : ReferentialType -> ReferentialType .
-  eq elementaryTypeOf(T) = T .
+  sort ReferentialType .
+  subsort ReferentialType < SequentialType .
+
+  var T : Type .
+
+  op InvalidSequentialTypeDeclaration : -> TypeError .
+  ceq T ? = Undefined(InvalidSequentialTypeDeclaration)
+    if not (T :: ReferentialType) .
+  ceq T * = Undefined(InvalidSequentialTypeDeclaration)
+    if not (T :: ReferentialType) .
+
+  op elementaryTypeOf : Type -> ReferentialType .
+  ceq elementaryTypeOf(T) = T if T :: ReferentialType .
+  ceq elementaryTypeOf(T ?) = T if T :: ReferentialType .
+  ceq elementaryTypeOf(T *) = T if T :: ReferentialType .
 endm
 
 mod TYPES is
   pr PRIMITIVE-TYPES .
+  pr SEQUENTIAL-TYPE .
   pr REFERENTIAL-TYPE .
 endm

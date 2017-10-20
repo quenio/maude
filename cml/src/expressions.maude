@@ -205,7 +205,9 @@ mod REFERENTIAL-EXPRESSION is
   op UnrelatedTypeComparison : -> TypeError .
   ceq type(E1 OP E2) = Undefined(UnrelatedTypeComparison)
     if (category(OP) == ReferentialExpression) /\
-       not (elementaryTypeOf(type(E1)) <:> elementaryTypeOf(type(E2))) .
+       (type(E1) :: ReferentialType) /\
+       (type(E2) :: ReferentialType) /\
+       not (type(E1) <:> type(E2)) .
 
   ceq type(E1 OP E2) = Boolean
     if (category(OP) == ReferentialExpression) /\
@@ -233,7 +235,8 @@ mod TYPE-CHECKING is
   op UnrelatedTypeCheck : -> TypeError .
   ceq type(E1 OP E2) = Undefined(UnrelatedTypeCheck)
     if (category(OP) == TypeChecking) /\
-       not (elementaryTypeOf(E2) <:> elementaryTypeOf(type(E1))) .
+       matchCardinality(type(E1), E2) /\
+       not (elementaryTypeOf(type(E1)) <:> elementaryTypeOf(E2)) .
 
   --- op InvalidRequiredTypeCheck : -> TypeError .
   --- ceq type(E1 OP E2) = Undefined(InvalidRequiredTypeCheck)
