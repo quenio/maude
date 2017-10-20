@@ -9,13 +9,15 @@ mod SCENARIO is
   eq type(books) = Book * .
 
   op Product : -> ReferenceType .
-  ops product products : -> Expression .
+  ops product product? products : -> Expression .
   eq type(product) = Product .
+  eq type(product?) = Product ? .
   eq type(products) = Product * .
 
   op Order : -> ReferenceType .
-  ops order orders : -> Expression .
+  ops order order? orders : -> Expression .
   eq type(order) = Order .
+  eq type(order?) = Order ? .
   eq type(orders) = Order * .
 
   eq Book <: Product = true .

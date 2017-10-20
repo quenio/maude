@@ -368,19 +368,32 @@ mod CONDITIONAL-EXPRESSION is
   pr EXPRESSION .
 
   op _if_ : Expression Expression -> Expression .
-  op _unless_ : Expression Expression -> Expression .
 
-  var Cond Expr : Expression .
+  var Cond Expr Expr2 : Expression .
 
-  ceq type(Expr if Cond) = type(Expr)
-    if not single(type(Expr)) .
-  ceq type(Expr if Cond) = (type(Expr) ?)
-    if single(type(Expr)) .
+  eq type(Expr if Cond) = type(
+    elementaryTypeOf(type(Expr)),
+    zero,
+    maxCardinality(elementaryTypeOf(type(Expr)) ?, type(Expr))
+  ) .
 
-  ceq type(Expr unless Cond) = type(Expr)
-    if not single(type(Expr)) .
-  ceq type(Expr unless Cond) = (type(Expr) ?)
-    if single(type(Expr)) .
+  op if_then_else_ : Expression Expression Expression -> Expression .
+  ceq type(if Cond then Expr else Expr2) = type(
+    elementaryTypeOf(type(Expr2)),
+    minCardinality(type(Expr), type(Expr2)),
+    maxCardinality(type(Expr), type(Expr2))
+  )
+    if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
+  ceq type(if Cond then Expr else Expr2) = type(
+    elementaryTypeOf(type(Expr)),
+    minCardinality(type(Expr), type(Expr2)),
+    maxCardinality(type(Expr), type(Expr2))
+  )
+    if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
+
+  op IncompatibleConditionalOperands : -> TypeError .
+  ceq type(if Cond then Expr else Expr2) = Undefined(IncompatibleConditionalOperands)
+    if not (elementaryTypeOf(type(Expr)) <:> elementaryTypeOf(type(Expr2))) .
 endm
 
 mod UNDEFINED-EXPRESSION is

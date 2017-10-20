@@ -26,8 +26,9 @@ mod TYPE is
 
   sorts Type .
 
+  var T T1 T2 : Type .
+
   op _<:_ : Type Type -> Bool .
-  var T : Type .
   eq T <: T = true .
 
   op _<:>_ : Type Type -> Bool .
@@ -38,12 +39,21 @@ mod TYPE is
   eq minCardinality(T ?) = zero .
   eq minCardinality(T *) = zero .
 
+  op minCardinality : Type Type -> Cardinality .
+  ceq minCardinality(T1, T2) = minCardinality(T1)
+    if minCardinality(T1) <= minCardinality(T2) .
+  eq minCardinality(T1, T2) = minCardinality(T2) .
+
   op maxCardinality : Type -> Cardinality .
   eq maxCardinality(T ?) = one .
   eq maxCardinality(T *) = many .
 
+  op maxCardinality : Type Type -> Cardinality .
+  ceq maxCardinality(T1, T2) = maxCardinality(T2)
+    if maxCardinality(T1) <= maxCardinality(T2) .
+  eq maxCardinality(T1, T2) = maxCardinality(T1) .
+
   op _<*_ : Type Type -> Bool .
-  var T1 T2 : Type .
   eq T1 <* T2 = minCardinality(T1) >= minCardinality(T2) and
                 maxCardinality(T1) <= maxCardinality(T2) .
 
@@ -64,6 +74,11 @@ mod TYPE is
 
   op single : Type -> Bool .
   eq single(T) = minCardinality(T) == one and maxCardinality(T) == one .
+
+  op type : Type Cardinality Cardinality -> Type .
+  eq type(T, one, one) = T .
+  eq type(T, zero, one) = (T ?) .
+  eq type(T, zero, many) = (T *) .
 endm
 
 mod VALUE-TYPE is

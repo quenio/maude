@@ -3,6 +3,17 @@ red in SCENARIO : type(book if valid) == Book ? .
 red in SCENARIO : type(book? if valid) == Book ? .
 red in SCENARIO : type(books if valid) == Book * .
 
-red in SCENARIO : type(book unless valid) == Book ? .
-red in SCENARIO : type(book? unless valid) == Book ? .
-red in SCENARIO : type(books unless valid) == Book * .
+red in SCENARIO : type(if valid then book else product) == Product .
+red in SCENARIO : type(if valid then book? else product?) == Product ? .
+red in SCENARIO : type(if valid then books else products) == Product * .
+
+red in SCENARIO : type(if valid then book else product?) == Product ? .
+red in SCENARIO : type(if valid then book? else product) == Product ? .
+
+red in SCENARIO : type(if valid then book else products) == Product * .
+red in SCENARIO : type(if valid then books else product) == Product * .
+
+red in SCENARIO : type(if valid then book? else products) == Product * .
+red in SCENARIO : type(if valid then books else product?) == Product * .
+
+red in SCENARIO : type(if valid then book else order) == Undefined(IncompatibleConditionalOperands) .
