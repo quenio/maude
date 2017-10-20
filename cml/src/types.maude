@@ -96,6 +96,20 @@ mod SEQUENTIAL-TYPE is
   op one : -> Cardinality .
   op many : -> Cardinality .
 
+  op _<=_ : Cardinality Cardinality -> Bool .
+  var C : Cardinality .
+  eq C <= C = true .
+  eq zero <= one = true .
+  eq zero <= many = true .
+  eq one <= zero = false .
+  eq one <= many = true .
+  eq many <= zero = false .
+  eq many <= one = false .
+
+  op _>=_ : Cardinality Cardinality -> Bool .
+  var C1 C2 : Cardinality .
+  eq C1 >= C2 = C2 <= C1 .
+
   var T : Type .
 
   op minCardinality : SequentialType -> Cardinality .
@@ -113,6 +127,11 @@ mod SEQUENTIAL-TYPE is
   op matchCardinality : SequentialType SequentialType -> Bool .
   eq matchCardinality(T1, T2) = minCardinality(T1) == minCardinality(T2) and
                                 maxCardinality(T1) == maxCardinality(T2) .
+
+  op _<*_ : SequentialType SequentialType -> Bool .
+  eq T1 <* T2 = minCardinality(T1) >= minCardinality(T2) and
+                maxCardinality(T1) <= maxCardinality(T2) .
+
 endm
 
 mod REFERENTIAL-TYPE is
