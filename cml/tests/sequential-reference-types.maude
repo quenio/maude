@@ -4,17 +4,17 @@ load "../src/cml.maude" .
 mod SCENARIO is
   pr CML .
 
-  op Book : -> ReferentialType .
+  op Book : -> ReferenceType .
   ops book books : -> Expression .
   eq type(book) = Book .
   eq type(books) = Book * .
 
-  op Product : -> ReferentialType .
+  op Product : -> ReferenceType .
   ops product products : -> Expression .
   eq type(product) = Product .
   eq type(products) = Product * .
 
-  op Order : -> ReferentialType .
+  op Order : -> ReferenceType .
   ops order orders : -> Expression .
   eq type(order) = Order .
   eq type(orders) = Order * .
@@ -34,35 +34,35 @@ set show stats off .
 --- show components SCENARIO .
 --- show sorts SCENARIO .
 
-red in SCENARIO : type(books === product) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== product) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === product) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== product) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(product === books) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(product !== books) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(product === books) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(product !== books) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === order) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== order) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === order) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== order) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(order === books) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(order !== books) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(order === books) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(order !== books) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === Boolean) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== Boolean) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === Boolean) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== Boolean) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === Book) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== Book) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === Book) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== Book) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === flag) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== flag) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === flag) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== flag) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === book) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== book) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === book) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== book) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === products) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== products) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === products) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== products) == Undefined(ExpectedReferenceTypeOperands) .
 
-red in SCENARIO : type(books === orders) == Undefined(ExpectedReferentialTypeOperands) .
-red in SCENARIO : type(books !== orders) == Undefined(ExpectedReferentialTypeOperands) .
+red in SCENARIO : type(books === orders) == Undefined(ExpectedReferenceTypeOperands) .
+red in SCENARIO : type(books !== orders) == Undefined(ExpectedReferenceTypeOperands) .
 
 red in SCENARIO : type(books is Product) == Undefined(OutOfBoundsTypeCheck) .
 red in SCENARIO : type(books isnt Product) == Undefined(OutOfBoundsTypeCheck) .

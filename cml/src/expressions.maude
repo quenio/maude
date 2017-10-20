@@ -191,7 +191,7 @@ endm
 
 mod REFERENTIAL-EXPRESSION is
   pr INFIX-EXPRESSION .
-  pr REFERENTIAL-TYPE .
+  pr REFERENCE-TYPE .
   pr BOOLEAN-TYPE .
 
   op ReferentialExpression : -> Category .
@@ -205,23 +205,23 @@ mod REFERENTIAL-EXPRESSION is
   op UnrelatedTypeComparison : -> TypeError .
   ceq type(E1 OP E2) = Undefined(UnrelatedTypeComparison)
     if (category(OP) == ReferentialExpression) /\
-       (type(E1) :: ReferentialType) /\
-       (type(E2) :: ReferentialType) /\
+       (type(E1) :: ReferenceType) /\
+       (type(E2) :: ReferenceType) /\
        not (type(E1) <:> type(E2)) .
 
   ceq type(E1 OP E2) = Boolean
     if (category(OP) == ReferentialExpression) /\
-       (type(E1) :: ReferentialType) /\
-       (type(E2) :: ReferentialType) .
+       (type(E1) :: ReferenceType) /\
+       (type(E2) :: ReferenceType) .
 
-  op ExpectedReferentialTypeOperands : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(ExpectedReferentialTypeOperands)
+  op ExpectedReferenceTypeOperands : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(ExpectedReferenceTypeOperands)
     if category(OP) == ReferentialExpression .
 endm
 
 mod TYPE-CHECKING is
   pr INFIX-EXPRESSION .
-  pr REFERENTIAL-TYPE .
+  pr REFERENCE-TYPE .
   pr BOOLEAN-TYPE .
 
   op TypeChecking : -> Category .
@@ -260,7 +260,7 @@ endm
 
 mod TYPE-CASTING is
   pr INFIX-EXPRESSION .
-  pr REFERENTIAL-TYPE .
+  pr REFERENCE-TYPE .
   pr BOOLEAN-TYPE .
 
   op TypeCasting : -> Category .
@@ -300,11 +300,11 @@ mod TYPE-CASTING is
        (type(E1) <* E2) /\
        (elementaryTypeOf(E2) <: elementaryTypeOf(type(E1))) .
 
-  op InvalidReferentialTypeOperand : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidReferentialTypeOperand)
+  op InvalidReferenceTypeOperand : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidReferenceTypeOperand)
     if (OP == as?) /\
-       (type(E1) :: ReferentialType) /\
-       (E2 :: ReferentialType) .
+       (type(E1) :: ReferenceType) /\
+       (E2 :: ReferenceType) .
 
   ceq type(E1 OP E2) = E2
     if (category(OP) == TypeCasting) /\
