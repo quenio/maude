@@ -58,21 +58,21 @@ red in SCENARIO : type(book as? Product) == Undefined(UnnecessarilyConditionalTy
 
 red in SCENARIO : type(product as Book) == Undefined(InvalidSubTypeCast) .
 red in SCENARIO : type(product as! Book) == Book .
-red in SCENARIO : type(product as? Book) == Undefined(InvalidReferentialTypeCast).
+red in SCENARIO : type(product as? Book) == Undefined(InvalidReferentialTypeCast) .
 
-red in SCENARIO : type(book === flag) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(book !== flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book === flag) == Undefined(InvalidReferentialExpression) .
+red in SCENARIO : type(book !== flag) == Undefined(InvalidReferentialExpression) .
 
-red in SCENARIO : type(flag is Product) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(flag isnt Product) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(flag is Product) == Undefined(InvalidTypeCheck) .
+red in SCENARIO : type(flag isnt Product) == Undefined(InvalidTypeCheck) .
 
-red in SCENARIO : type(book is flag) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(book isnt flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book is flag) == Undefined(InvalidTypeCheck) .
+red in SCENARIO : type(book isnt flag) == Undefined(InvalidTypeCheck) .
 
-red in SCENARIO : type(flag as Product) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(flag as! Product) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(flag as? Product) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(flag as Product) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(flag as! Product) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(flag as? Product) == Undefined(InvalidTypeCast) .
 
-red in SCENARIO : type(book as flag) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(book as! flag) == Undefined(InvalidNonReferentialOperand) .
-red in SCENARIO : type(book as? flag) == Undefined(InvalidNonReferentialOperand) .
+red in SCENARIO : type(book as flag) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(book as! flag) == Undefined(InvalidTypeCast) .
+red in SCENARIO : type(book as? flag) == Undefined(InvalidTypeCast) .
