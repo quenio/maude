@@ -377,22 +377,34 @@ mod CONDITIONAL-EXPRESSION is
     maxCardinality(elementaryTypeOf(type(Expr)) ?, type(Expr))
   ) .
 
+  op _or?_ : Expression Expression -> Expression .
+  ceq type(Expr or? Expr2) = type(
+    elementaryTypeOf(type(Expr)),
+    zero,
+    maxCardinality(type(Expr), type(Expr2))
+  ) if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
+  ceq type(Expr or? Expr2) = type(
+    elementaryTypeOf(type(Expr2)),
+    zero,
+    maxCardinality(type(Expr), type(Expr2))
+  ) if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
+
   op if_then_else_ : Expression Expression Expression -> Expression .
   ceq type(if Cond then Expr else Expr2) = type(
     elementaryTypeOf(type(Expr2)),
     minCardinality(type(Expr), type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
-  )
-    if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
+  ) if elementaryTypeOf(type(Expr)) <: elementaryTypeOf(type(Expr2)) .
   ceq type(if Cond then Expr else Expr2) = type(
     elementaryTypeOf(type(Expr)),
     minCardinality(type(Expr), type(Expr2)),
     maxCardinality(type(Expr), type(Expr2))
-  )
-    if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
+  ) if elementaryTypeOf(type(Expr2)) <: elementaryTypeOf(type(Expr)) .
 
   op IncompatibleConditionalOperands : -> TypeError .
   ceq type(if Cond then Expr else Expr2) = Undefined(IncompatibleConditionalOperands)
+    if not (elementaryTypeOf(type(Expr)) <:> elementaryTypeOf(type(Expr2))) .
+  ceq type(Expr or? Expr2) = Undefined(IncompatibleConditionalOperands)
     if not (elementaryTypeOf(type(Expr)) <:> elementaryTypeOf(type(Expr2))) .
 endm
 

@@ -17,3 +17,24 @@ red in SCENARIO : type(if valid then book? else products) == Product * .
 red in SCENARIO : type(if valid then books else product?) == Product * .
 
 red in SCENARIO : type(if valid then book else order) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(if valid then book? else order) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(if valid then book? else orders) == Undefined(IncompatibleConditionalOperands) .
+
+--- red in SCENARIO : type(count or? amount) .
+
+red in SCENARIO : type(book or? product) == Product ? .
+red in SCENARIO : type(book? or? product?) == Product ? .
+red in SCENARIO : type(books or? products) == Product * .
+
+red in SCENARIO : type(book or? product?) == Product ? .
+red in SCENARIO : type(book? or? product) == Product ? .
+
+red in SCENARIO : type(book or? products) == Product * .
+red in SCENARIO : type(books or? product) == Product * .
+
+red in SCENARIO : type(book? or? products) == Product * .
+red in SCENARIO : type(books or? product?) == Product * .
+
+red in SCENARIO : type(book or? order) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(book? or? order) == Undefined(IncompatibleConditionalOperands) .
+red in SCENARIO : type(book? or? orders) == Undefined(IncompatibleConditionalOperands) .

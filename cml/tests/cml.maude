@@ -2,6 +2,7 @@ load "./types.maude" .
 load "./boolean-type.maude" .
 load "./arithmetic.maude" .
 load "./relational-expression.maude" .
+load "./conditional-expression.maude" .
 load "./str-concat.maude" .
 load "./single-reference-type.maude" .
 load "./sequential-reference-type.maude" .
