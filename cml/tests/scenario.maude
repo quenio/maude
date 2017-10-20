@@ -3,8 +3,9 @@ mod SCENARIO is
   pr CML .
 
   op Book : -> ReferenceType .
-  ops book books : -> Expression .
+  ops book book? books : -> Expression .
   eq type(book) = Book .
+  eq type(book?) = Book ? .
   eq type(books) = Book * .
 
   op Product : -> ReferenceType .

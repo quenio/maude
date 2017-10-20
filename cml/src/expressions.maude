@@ -364,6 +364,25 @@ mod TYPE-CASTING is
     if category(OP) == TypeCasting .
 endm
 
+mod CONDITIONAL-EXPRESSION is
+  pr EXPRESSION .
+
+  op _if_ : Expression Expression -> Expression .
+  op _unless_ : Expression Expression -> Expression .
+
+  var Cond Expr : Expression .
+
+  ceq type(Expr if Cond) = type(Expr)
+    if not single(type(Expr)) .
+  ceq type(Expr if Cond) = (type(Expr) ?)
+    if single(type(Expr)) .
+
+  ceq type(Expr unless Cond) = type(Expr)
+    if not single(type(Expr)) .
+  ceq type(Expr unless Cond) = (type(Expr) ?)
+    if single(type(Expr)) .
+endm
+
 mod UNDEFINED-EXPRESSION is
   pr TYPE .
   pr EXPRESSION .
@@ -381,5 +400,6 @@ mod EXPRESSIONS is
   pr REFERENTIAL-EXPRESSION .
   pr TYPE-CHECKING .
   pr TYPE-CASTING .
+  pr CONDITIONAL-EXPRESSION .
   pr UNDEFINED-EXPRESSION .
 endm

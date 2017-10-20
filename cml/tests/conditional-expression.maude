@@ -1,0 +1,8 @@
+
+red in SCENARIO : type(book if valid) == Book ? .
+red in SCENARIO : type(book? if valid) == Book ? .
+red in SCENARIO : type(books if valid) == Book * .
+
+red in SCENARIO : type(book unless valid) == Book ? .
+red in SCENARIO : type(book? unless valid) == Book ? .
+red in SCENARIO : type(books unless valid) == Book * .

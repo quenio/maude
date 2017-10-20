@@ -61,6 +61,9 @@ mod TYPE is
 
   sorts TypeError .
   op Undefined : TypeError -> Type .
+
+  op single : Type -> Bool .
+  eq single(T) = minCardinality(T) == one and maxCardinality(T) == one .
 endm
 
 mod VALUE-TYPE is
