@@ -1,0 +1,19 @@
+load "../src/cml.maude" .
+
+mod SCENARIO is
+  pr CML .
+endm
+
+set show stats off .
+
+red in SCENARIO : (Boolean *) == (Boolean *) .
+red in SCENARIO : (Boolean * *) == Undefined(InvalidCardinalityDeclaration) .
+
+red in SCENARIO : (Boolean ?) == (Boolean ?) .
+red in SCENARIO : (Boolean ? ?) == Undefined(InvalidCardinalityDeclaration) .
+
+red in SCENARIO : (Boolean ? *) == Undefined(InvalidCardinalityDeclaration) .
+red in SCENARIO : (Boolean * ?) == Undefined(InvalidCardinalityDeclaration) .
+
+red in SCENARIO : (Boolean ? ? ?) == Undefined(InvalidCardinalityDeclaration) .
+red in SCENARIO : (Boolean * * *) == Undefined(InvalidCardinalityDeclaration) .

@@ -1,0 +1,1 @@
+maude ./cml/tests/$1.maude | grep -B 2 "result Bool: false"

@@ -35,7 +35,12 @@ mod TYPE is
   eq X <:> Y = X <: Y or Y <: X .
 
   op minCardinality : Type -> Cardinality .
+  eq minCardinality(T ?) = zero .
+  eq minCardinality(T *) = zero .
+
   op maxCardinality : Type -> Cardinality .
+  eq maxCardinality(T ?) = one .
+  eq maxCardinality(T *) = many .
 
   op _<*_ : Type Type -> Bool .
   var T1 T2 : Type .
@@ -43,6 +48,16 @@ mod TYPE is
                 maxCardinality(T1) <= maxCardinality(T2) .
 
   op elementaryTypeOf : Type -> Type .
+
+  op InvalidCardinalityDeclaration : -> TypeError .
+
+  op _? : Type -> Type .
+  ceq T ? = Undefined(InvalidCardinalityDeclaration)
+    if not (maxCardinality(elementaryTypeOf(T)) == one) .
+
+  op _* : Type -> Type .
+  ceq T * = Undefined(InvalidCardinalityDeclaration)
+    if not (maxCardinality(elementaryTypeOf(T)) == one) .
 
   sorts TypeError .
   op Undefined : TypeError -> Type .
@@ -153,37 +168,13 @@ mod PRIMITIVE-TYPES is
   pr STRING-TYPE .
 endm
 
-mod SEQUENTIAL-TYPE is
+mod REFERENTIAL-TYPE is
   pr TYPE .
 
-  sorts SequentialType .
-  subsorts SequentialType < Type .
-
-  op _? : Type -> SequentialType .
-  op _* : Type -> SequentialType .
-
-  var T : Type .
-
-  eq minCardinality(T ?) = zero .
-  eq minCardinality(T *) = zero .
-
-  eq maxCardinality(T ?) = one .
-  eq maxCardinality(T *) = many .
-endm
-
-mod REFERENTIAL-TYPE is
-  pr SEQUENTIAL-TYPE .
-
   sort ReferentialType .
-  subsort ReferentialType < SequentialType .
+  subsort ReferentialType < Type .
 
   var T : Type .
-
-  op InvalidSequentialTypeDeclaration : -> TypeError .
-  ceq T ? = Undefined(InvalidSequentialTypeDeclaration)
-    if not (T :: ReferentialType) .
-  ceq T * = Undefined(InvalidSequentialTypeDeclaration)
-    if not (T :: ReferentialType) .
 
   ceq elementaryTypeOf(T) = T if T :: ReferentialType .
   ceq elementaryTypeOf(T ?) = T if T :: ReferentialType .
@@ -195,6 +186,5 @@ endm
 
 mod TYPES is
   pr PRIMITIVE-TYPES .
-  pr SEQUENTIAL-TYPE .
   pr REFERENTIAL-TYPE .
 endm
