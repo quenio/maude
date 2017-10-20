@@ -168,6 +168,8 @@ endm
 mod STRING-CONCATENATION is
   pr INFIX-EXPRESSION .
   pr STRING-TYPE .
+  pr VALUE-TYPE .
+  pr REFERENCE-TYPE .
 
   op Concatenation : -> Category .
   op & : -> Operator .
@@ -178,15 +180,16 @@ mod STRING-CONCATENATION is
   var OP : Operator .
 
   op concat : Expression Operator Expression -> Bool .
+  ceq type(E1 OP E2) = String
+    if category(OP) == Concatenation /\
+       ((type(E1) :: ValueType) or (type(E1) :: ReferenceType)) /\
+       ((type(E2) :: ValueType) or (type(E2) :: ReferenceType)) /\
+       not (E1 :: Type) /\
+       not (E2 :: Type) .
 
-  ceq concat(E1, OP, E2) = category(OP) == Concatenation
-    if type(E1) == String and type(E2) == String .
-
-  ceq type(E1 OP E2) = String if concat(E1, OP, E2) .
-
-  op InvalidStringConcatenation : -> TypeError .
-  ceq type(E1 OP E2) = Undefined(InvalidStringConcatenation)
-    if category(OP) == Concatenation .
+  op InvalidConcatentionOperand : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(InvalidConcatentionOperand)
+    if (category(OP) == Concatenation) .
 endm
 
 mod REFERENTIAL-EXPRESSION is

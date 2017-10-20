@@ -1,0 +1,6 @@
+load "./types.maude" .
+load "./boolean-type.maude" .
+load "./arithmetic.maude" .
+load "./str-concat.maude" .
+load "./single-reference-type.maude" .
+load "./sequential-reference-type.maude" .

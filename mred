@@ -1,0 +1,1 @@
+maude "./cml/src/cml.maude" "./cml/tests/scenario.maude" "./cml/tests/$1.maude" | grep -A 2 "$2"

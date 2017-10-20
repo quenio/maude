@@ -1,7 +1,0 @@
-
-load "../src/cml.maude" .
-
-red in CML : type(True) .
-red in CML : type(False) .
-red in CML : type(True or False) .
-red in CML : type(True and False) .

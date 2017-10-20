@@ -1,11 +1,10 @@
 
-load "../src/cml.maude" .
-
 --- set trace on .
 
-red in CML : type('A s) .
-red in CML : type(('A s) & ('B s)) .
-red in CML : type(('A s) + ('B s)) .
-red in CML : type(('A s) and ('B s)) .
-red in CML : type(('1 i) & ('B s)) .
-red in CML : type(('1 f) & ('2 f)) .
+red in CML : type('A s) == String .
+red in CML : type(('A s) & ('B s)) == String .
+red in CML : type(('1 i) & ('B s)) == String .
+red in CML : type(('1 f) & ('2 f)) == String .
+red in CML : type(('A s) + ('B s)) == Undefined(InvalidArithmeticExpression) .
+red in CML : type(('A s) and ('B s)) == Undefined(InvalidLogicalExpression) .
+red in CML : type(('A s) & Boolean) == Undefined(InvalidConcatentionOperand) .

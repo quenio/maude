@@ -1,0 +1,33 @@
+
+mod SCENARIO is
+  pr CML .
+
+  op Book : -> ReferenceType .
+  ops book books : -> Expression .
+  eq type(book) = Book .
+  eq type(books) = Book * .
+
+  op Product : -> ReferenceType .
+  ops product products : -> Expression .
+  eq type(product) = Product .
+  eq type(products) = Product * .
+
+  op Order : -> ReferenceType .
+  ops order orders : -> Expression .
+  eq type(order) = Order .
+  eq type(orders) = Order * .
+
+  eq Book <: Product = true .
+
+  var T : Type .
+  ceq Order <: T = false if T =/= Order .
+  ceq T <: Order = false if T =/= Order .
+
+  op flag : -> Expression .
+  eq type(flag) = Boolean .
+
+  op valid : -> Expression .
+  eq type(valid) = Boolean .
+endm
+
+set show stats off .

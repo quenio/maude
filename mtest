@@ -1,1 +1,1 @@
-maude ./cml/tests/$1.maude | grep -B 2 "result Bool: false"
+maude "./cml/src/cml.maude" "./cml/tests/scenario.maude" "./cml/tests/$1.maude" | grep -B 2 "result Bool: false"

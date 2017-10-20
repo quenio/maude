@@ -63,11 +63,18 @@ mod TYPE is
   op Undefined : TypeError -> Type .
 endm
 
-mod BOOLEAN-TYPE is
+mod VALUE-TYPE is
   pr TYPE .
 
+  sort ValueType .
+  subsort ValueType < Type .
+endm
+
+mod BOOLEAN-TYPE is
+  pr VALUE-TYPE .
+
   sort BooleanType .
-  subsort BooleanType < Type .
+  subsort BooleanType < ValueType .
 
   op Boolean : -> BooleanType .
 
@@ -84,10 +91,10 @@ mod BOOLEAN-TYPE is
 endm
 
 mod NUMERIC-TYPES is
-  pr TYPE .
+  pr VALUE-TYPE .
 
   sort NumericType .
-  subsort NumericType < Type .
+  subsort NumericType < ValueType .
 
   op Byte : -> NumericType .
   op Short : -> NumericType .
@@ -118,10 +125,10 @@ mod NUMERIC-TYPES is
 endm
 
 mod FLOATING-POINT-TYPES is
-  pr TYPE .
+  pr VALUE-TYPE .
 
   sort FloatingPointType .
-  subsort FloatingPointType < Type .
+  subsort FloatingPointType < ValueType .
 
   op Float : -> FloatingPointType .
   op Double : -> FloatingPointType .
@@ -146,8 +153,9 @@ mod FLOATING-POINT-TYPES is
 endm
 
 mod STRING-TYPE is
-  pr TYPE .
-  op String : -> Type .
+  pr VALUE-TYPE .
+
+  op String : -> ValueType .
 
   var T : Type .
 
