@@ -23,11 +23,22 @@ mod SCENARIO is
   ceq Order <: T = false if T =/= Order .
   ceq T <: Order = false if T =/= Order .
 
-  op flag : -> Expression .
+  ops flag valid : -> Expression .
   eq type(flag) = Boolean .
-
-  op valid : -> Expression .
   eq type(valid) = Boolean .
+
+  ops count size amount : -> Expression .
+  eq type(count) = Integer .
+  eq type(size) = Long .
+  eq type(amount) = Decimal .
+
+  ops rate speed : -> Expression .
+  eq type(rate) = Float .
+  eq type(speed) = Double .
+
+  ops name city : -> Expression .
+  eq type(name) = String .
+  eq type(city) = String .
 endm
 
 set show stats off .

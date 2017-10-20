@@ -165,6 +165,51 @@ mod ARITHMETIC-EXPRESSION is
     if category(OP) == Arithmetic .
 endm
 
+mod RELATIONAL-EXPRESSION is
+  pr INFIX-EXPRESSION .
+  pr BOOLEAN-TYPE .
+  pr NUMERIC-TYPES .
+  pr FLOATING-POINT-TYPES .
+  pr STRING-TYPE .
+
+  op Relational : -> Category .
+  ops v=, !=, <, <=, >, >= : -> Operator .
+
+  eq category(v=) = Relational .
+  eq category(!=) = Relational .
+  eq category(<) = Relational .
+  eq category(<=) = Relational .
+  eq category(>) = Relational .
+  eq category(>=) = Relational .
+
+  vars E1 E2 : Expression .
+  var OP : Operator .
+
+  op relational : Expression Operator Expression -> Bool .
+  ceq relational(E1, OP, E2) = category(OP) == Relational
+    if numeric(type(E1)) and numeric(type(E2)) .
+  ceq relational(E1, OP, E2) = category(OP) == Relational
+    if floating_point(type(E1)) and floating_point(type(E2)) .
+  ceq relational(E1, OP, E2) = category(OP) == Relational
+    if type(E1) == String and type(E2) == String .
+
+  ceq type(E1 OP E2) = Boolean
+    if relational(E1, OP, E2) .
+
+  op IncompatibleRelationalOperands : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(IncompatibleRelationalOperands)
+    if category(OP) == Relational /\
+       (type(E1) :: ValueType) /\
+       (type(E2) :: ValueType) /\
+       not (type(E1) == Boolean) /\
+       not (type(E2) == Boolean) /\
+       type(E1) =/= type(E2) .
+
+  op ExpectedRelationalOperands : -> TypeError .
+  ceq type(E1 OP E2) = Undefined(ExpectedRelationalOperands)
+    if category(OP) == Relational .
+endm
+
 mod STRING-CONCATENATION is
   pr INFIX-EXPRESSION .
   pr STRING-TYPE .
@@ -331,6 +376,7 @@ mod EXPRESSIONS is
   pr LITERALS .
   pr LOGICAL-EXPRESSION .
   pr ARITHMETIC-EXPRESSION .
+  pr RELATIONAL-EXPRESSION .
   pr STRING-CONCATENATION .
   pr REFERENTIAL-EXPRESSION .
   pr TYPE-CHECKING .

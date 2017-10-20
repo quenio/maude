@@ -1,0 +1,17 @@
+
+red in SCENARIO : type(count v= size) == Boolean .
+red in SCENARIO : type(count != size) == Boolean .
+red in SCENARIO : type(amount <= size) == Boolean .
+red in SCENARIO : type(rate >= speed) == Boolean .
+red in SCENARIO : type(name > city) == Boolean .
+
+red in SCENARIO : type(rate >= count) == Undefined(IncompatibleRelationalOperands) .
+
+red in SCENARIO : type(flag v= True) == Undefined(ExpectedRelationalOperands) .
+red in SCENARIO : type(flag != True) == Undefined(ExpectedRelationalOperands) .
+
+red in SCENARIO : type(flag v= valid) == Undefined(ExpectedRelationalOperands) .
+red in SCENARIO : type(flag != valid) == Undefined(ExpectedRelationalOperands) .
+red in SCENARIO : type(book v= order) == Undefined(ExpectedRelationalOperands) .
+red in SCENARIO : type(books v= orders) == Undefined(ExpectedRelationalOperands) .
+red in SCENARIO : type(count v= Boolean) == Undefined(ExpectedRelationalOperands) .
