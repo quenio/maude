@@ -38,6 +38,7 @@ mod TYPE is
   op minCardinality : Type -> Cardinality .
   eq minCardinality(T ?) = zero .
   eq minCardinality(T *) = zero .
+  eq minCardinality(T +) = one .
   eq minCardinality(T) = one .
 
   op minCardinality : Type Type -> Cardinality .
@@ -48,6 +49,7 @@ mod TYPE is
   op maxCardinality : Type -> Cardinality .
   eq maxCardinality(T ?) = one .
   eq maxCardinality(T *) = many .
+  eq maxCardinality(T +) = many .
   eq maxCardinality(T) = one .
 
   op maxCardinality : Type Type -> Cardinality .
