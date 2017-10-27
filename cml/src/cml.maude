@@ -1,7 +1,10 @@
 
+load "./types.maude" .
+load "./schemes.maude" .
 load "./expressions.maude" .
 
 mod CML is
   ex TYPES .
+  ex SCHEME .
   ex EXPRESSIONS .
 endm

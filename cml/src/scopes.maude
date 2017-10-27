@@ -1,0 +1,38 @@
+mod VARIABLE is
+  sort Variable .
+endm
+
+view Variable from TRIV to VARIABLE is
+  sort Elt to Variable .
+endv
+
+mod SCOPE is
+  pr TYPE .
+  pr VARIABLE .
+
+  sorts Scope Domain .
+
+  pr LIST-AND-SET{Variable} .
+  subsort List{Variable} < Domain .
+
+  var L : List{Variable} .
+  vars D D1 D2 : Domain .
+
+  op _(_) : Scope Variable -> Type .
+  op dom : Scope -> Domain .
+
+  op _ subset _ : Domain Domain -> Bool .
+  eq D1 subset D2 = makeSet(D1) subset makeSet(D2) .
+
+  op _|_ : Domain Domain -> Domain .
+  eq D1 | D2 = append(D1, D2) .
+
+  vars S1 S2 : Scope .
+
+  op $lte : Scope Scope Domain -> Bool .
+  eq $lte(S1, S2, nil) = true .
+  eq $lte(S1, S2, D) = S1(head(D)) <: S2(head(D)) and $lte(S1, S2, tail(D)) .
+
+  op _ <* _ : Scope Scope -> Bool .
+  eq S1 <* S2 = $lte(S1, S2, dom(S2)) .
+endm

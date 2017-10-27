@@ -1,0 +1,23 @@
+
+mod SCOPE-SCENARIO is
+  pr CML .
+
+  ops Product Book Order : -> Scope .
+  ops title qty total : -> Variable .
+
+  eq dom(Order) = (qty) .
+  eq dom(Product) = (qty) .
+  eq dom(Book) = dom(Product) | (title) .
+
+  eq Order(qty) = String .
+  eq Product(qty) = Integer .
+  eq Book(qty) = Integer .
+  eq Book(title) = String .
+endm
+
+--- set trace on .
+
+red in SCOPE-SCENARIO : Book <* Product .
+red in SCOPE-SCENARIO : not (Product <* Book) .
+red in SCOPE-SCENARIO : not (Order <* Product) .
+red in SCOPE-SCENARIO : not (Product <* Order) .

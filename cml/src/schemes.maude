@@ -1,0 +1,26 @@
+
+load "./scopes.maude" .
+
+mod SCHEME is
+  pr SCOPE .
+
+  sort Scheme .
+
+  op [_]_ : Scope Type -> Scheme [ctor] .
+
+  var S : Scope .
+  var T : Type .
+
+  op scope : Scheme -> Scope .
+  eq scope([S]T) = S .
+
+  op type : Scheme -> Type .
+  eq type([S]T) = T .
+
+  op _ <: _ : Scheme Scheme -> Bool .
+  var SCH1 SCH2 : Scheme .
+  eq SCH1 <: SCH2 =
+    dom(scope(SCH1)) subset dom(scope(SCH2)) and
+    scope(SCH2) <* scope(SCH1) and
+    type(SCH1) <: type(SCH2) .
+endm

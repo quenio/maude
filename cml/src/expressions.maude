@@ -1,6 +1,4 @@
 
-load "./types.maude" .
-
 mod OPERATOR is
   sorts Operator Category .
 
