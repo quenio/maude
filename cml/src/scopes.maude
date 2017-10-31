@@ -7,18 +7,25 @@ view Variable from TRIV to VARIABLE is
 endv
 
 mod SCOPE is
-  pr TYPE .
-  pr VARIABLE .
-
   sorts Scope Domain .
 
+  pr VARIABLE .
   pr LIST-AND-SET{Variable} .
   subsort List{Variable} < Domain .
 
   var L : List{Variable} .
+  var V : Variable .
+  var T : Type .
   vars D D1 D2 : Domain .
+  vars S S1 S2 : Scope .
+
+  pr TYPE .
+  op Top : -> Type .
+  eq Top <: T = false .
 
   op _(_) : Scope Variable -> Type .
+  ceq S(V) = Top if not (V in makeSet(dom(S))) .
+
   op dom : Scope -> Domain .
 
   op _ subset _ : Domain Domain -> Bool .
@@ -26,8 +33,6 @@ mod SCOPE is
 
   op _|_ : Domain Domain -> Domain .
   eq D1 | D2 = append(D1, D2) .
-
-  vars S1 S2 : Scope .
 
   op $lte : Scope Scope Domain -> Bool .
   eq $lte(S1, S2, nil) = true .

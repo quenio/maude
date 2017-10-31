@@ -1,0 +1,29 @@
+
+mod SCHEMES-SCENARIO is
+  pr CML .
+
+  ops TProduct TBook : -> Type .
+  ops Product Book Order : -> Scope .
+  ops title qty product : -> Variable .
+
+  eq TBook <: TProduct = true .
+
+  eq dom(Order) = (product) .
+  eq dom(Product) = (qty) .
+  eq dom(Book) = dom(Product) | (title) .
+
+  eq Order(product) = TProduct .
+  eq Product(qty) = Integer .
+  eq Book(qty) = Integer .
+  eq Book(title) = String .
+endm
+
+--- set trace on .
+
+red in SCHEMES-SCENARIO : [Order]TBook <: [Order]TProduct .
+--- red in SCHEMES-SCENARIO : Book <* Book .
+--- red in SCHEMES-SCENARIO : Product <* Product .
+--- red in SCHEMES-SCENARIO : Book <* Product .
+--- red in SCHEMES-SCENARIO : not (Product <* Book) .
+--- red in SCHEMES-SCENARIO : not (Order <* Product) .
+--- red in SCHEMES-SCENARIO : not (Product <* Order) .
