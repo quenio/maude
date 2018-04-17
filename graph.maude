@@ -1,0 +1,37 @@
+mod GRAPH is
+  sorts Vertex Edge EdgeEnd, Marker Graph .
+
+  protecting SET{Vertex} .
+  protecting SET{Edge} .
+  protecting SET{Marker} .
+
+  op <_,_> : Set{Vertex} Set{Edge} -> Graph .
+  op <_,_,_> : Set{Vertex} Set{Marker} Set{Edge} -> Graph .
+  op <_,_> : Vertex Vertex -> Edge .
+  op _-_ : Vertex Vextex -> Edge .
+  op _->_ : Vertex Vextex -> Edge .
+  op _<-_ : Vertex Vextex -> Edge .
+  op _<->_ : Vertex Vextex -> Edge .
+  op _o-o_ : Vertex Vextex -> Edge .
+  op _o-_ : Vertex Vextex -> Edge .
+  op _-o_ : Vertex Vextex -> Edge .
+  op _o->_ : Vertex Vextex -> Edge .
+  op _<-o_ : Vertex Vextex -> Edge .
+  op {_,_} : EgdeEnd EdgeEnd -> Edge .
+  op [_,_] : Vertex Marker -> EdgeEnd .
+
+  op EM : -> Marker .
+  op > : -> Marker .
+  op < : -> Marker .
+  op o : -> Marker .
+
+  vars A B : Vertex .
+  eq {[A,EM],[B,EM]} = A-B .
+  eq {[A,EM],[B,>]} = A->B .
+  eq {[A,<],[B,EM]} = A<-B .
+  eq {[A,o],[B,o]} = Ao-oB .
+  eq {[A,o],[B,EM]} = Ao-B .
+  eq {[A,EM],[B,o]} = A-oB .
+  eq {[A,o],[B,>]} = Ao->B .
+  eq {[A,<],[B,o]} = A<-oB .
+endm
