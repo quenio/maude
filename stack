@@ -1,0 +1,1 @@
+maude -batch -no-banner stack.maude | grep -B 10 result

@@ -1,0 +1,34 @@
+mod STACK{X :: TRIV} is
+  including NAT .
+  sorts Stack{X} Error .
+  subsort Error < Stack{X} X$Elt .
+  subsort Nat < X$Elt .
+  op error : -> Error .
+  op new : -> Stack{X} .
+  op empty(_) : Stack{X} -> Bool .
+  op top(_) : Stack{X} -> X$Elt .
+  op push(_, _) : Stack{X} X$Elt -> Stack{X} .
+  op pop(_) : Stack{X} -> Stack{X} .
+  var x : X$Elt .
+  var s : Stack{X} .
+  eq empty(new) = true .
+  eq empty(push(s, x)) = false .
+  eq top(push(s, x)) = x .
+  eq pop(push(s, x)) = s .
+  eq top(new) = error .
+  eq pop(new) = error .
+  eq push(error, x) = error .
+endm
+
+set show stats off .
+
+red in STACK : empty(new) .
+red in STACK : not empty(push(new, 10)) .
+red in STACK : top(push(new, 10)) == 10 .
+red in STACK : empty(pop(push(new, 10))) .
+red in STACK : top(pop(push(push(new, 20), 10))) == 20 .
+red in STACK : pop(push(push(new, 20), 10)) == push(new, 20) .
+red in STACK : top(new) == error .
+red in STACK : pop(new) == error .
+red in STACK : empty(pop(new)) == empty(error) .
+red in STACK : push(pop(new), 10) == error .
